@@ -25,6 +25,7 @@ Partial Class FormMain
         Me.CheckedListBoxSelectMods = New System.Windows.Forms.CheckedListBox()
         Me.ButtonTest = New System.Windows.Forms.Button()
         Me.LabelModInfo = New System.Windows.Forms.Label()
+        Me.ButtonTest1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'CheckedListBoxSelectMods
@@ -53,11 +54,21 @@ Partial Class FormMain
         Me.LabelModInfo.TabIndex = 2
         Me.LabelModInfo.Text = "Label1"
         '
+        'ButtonTest1
+        '
+        Me.ButtonTest1.Location = New System.Drawing.Point(331, 368)
+        Me.ButtonTest1.Name = "ButtonTest1"
+        Me.ButtonTest1.Size = New System.Drawing.Size(120, 44)
+        Me.ButtonTest1.TabIndex = 3
+        Me.ButtonTest1.Text = "Button1"
+        Me.ButtonTest1.UseVisualStyleBackColor = True
+        '
         'FormMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.ButtonTest1)
         Me.Controls.Add(Me.LabelModInfo)
         Me.Controls.Add(Me.ButtonTest)
         Me.Controls.Add(Me.CheckedListBoxSelectMods)
@@ -70,4 +81,5 @@ Partial Class FormMain
     Friend WithEvents CheckedListBoxSelectMods As CheckedListBox
     Friend WithEvents ButtonTest As Button
     Friend WithEvents LabelModInfo As Label
+    Friend WithEvents ButtonTest1 As Button
 End Class
