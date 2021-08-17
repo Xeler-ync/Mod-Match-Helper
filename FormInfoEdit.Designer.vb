@@ -30,15 +30,18 @@ Partial Class FormInfoEdit
         Me.LabelRely = New System.Windows.Forms.Label()
         Me.ButtonReloadModList = New System.Windows.Forms.Button()
         Me.ButtonReset = New System.Windows.Forms.Button()
+        Me.ButtonRemoveDuplicate = New System.Windows.Forms.Button()
+        Me.ButtonShowAll = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'ListBoxListMod
         '
+        Me.ListBoxListMod.Enabled = False
         Me.ListBoxListMod.FormattingEnabled = True
         Me.ListBoxListMod.ItemHeight = 12
         Me.ListBoxListMod.Location = New System.Drawing.Point(12, 12)
         Me.ListBoxListMod.Name = "ListBoxListMod"
-        Me.ListBoxListMod.Size = New System.Drawing.Size(349, 424)
+        Me.ListBoxListMod.Size = New System.Drawing.Size(349, 436)
         Me.ListBoxListMod.TabIndex = 0
         '
         'TextBoxInfoInput
@@ -50,7 +53,6 @@ Partial Class FormInfoEdit
         Me.TextBoxInfoInput.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal
         Me.TextBoxInfoInput.Size = New System.Drawing.Size(228, 42)
         Me.TextBoxInfoInput.TabIndex = 1
-        Me.TextBoxInfoInput.Text = "Name" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Description" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Rely" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'LabelName
         '
@@ -89,29 +91,51 @@ Partial Class FormInfoEdit
         '
         'ButtonReloadModList
         '
-        Me.ButtonReloadModList.Font = New System.Drawing.Font("宋体", 15.0!)
+        Me.ButtonReloadModList.Font = New System.Drawing.Font("宋体", 13.0!)
         Me.ButtonReloadModList.Location = New System.Drawing.Point(367, 395)
         Me.ButtonReloadModList.Name = "ButtonReloadModList"
-        Me.ButtonReloadModList.Size = New System.Drawing.Size(148, 43)
+        Me.ButtonReloadModList.Size = New System.Drawing.Size(148, 25)
         Me.ButtonReloadModList.TabIndex = 6
         Me.ButtonReloadModList.Text = "ReloadModList"
         Me.ButtonReloadModList.UseVisualStyleBackColor = True
         '
         'ButtonReset
         '
-        Me.ButtonReset.Font = New System.Drawing.Font("宋体", 15.0!)
+        Me.ButtonReset.Font = New System.Drawing.Font("宋体", 13.0!)
         Me.ButtonReset.Location = New System.Drawing.Point(521, 395)
         Me.ButtonReset.Name = "ButtonReset"
-        Me.ButtonReset.Size = New System.Drawing.Size(151, 43)
+        Me.ButtonReset.Size = New System.Drawing.Size(151, 25)
         Me.ButtonReset.TabIndex = 7
         Me.ButtonReset.Text = "ResetAll"
         Me.ButtonReset.UseVisualStyleBackColor = True
+        '
+        'ButtonRemoveDuplicate
+        '
+        Me.ButtonRemoveDuplicate.Font = New System.Drawing.Font("宋体", 13.0!)
+        Me.ButtonRemoveDuplicate.Location = New System.Drawing.Point(367, 423)
+        Me.ButtonRemoveDuplicate.Name = "ButtonRemoveDuplicate"
+        Me.ButtonRemoveDuplicate.Size = New System.Drawing.Size(148, 25)
+        Me.ButtonRemoveDuplicate.TabIndex = 8
+        Me.ButtonRemoveDuplicate.Text = "RemoveDuplicate"
+        Me.ButtonRemoveDuplicate.UseVisualStyleBackColor = True
+        '
+        'ButtonShowAll
+        '
+        Me.ButtonShowAll.Font = New System.Drawing.Font("宋体", 13.0!)
+        Me.ButtonShowAll.Location = New System.Drawing.Point(521, 423)
+        Me.ButtonShowAll.Name = "ButtonShowAll"
+        Me.ButtonShowAll.Size = New System.Drawing.Size(151, 25)
+        Me.ButtonShowAll.TabIndex = 9
+        Me.ButtonShowAll.Text = "ShowAll"
+        Me.ButtonShowAll.UseVisualStyleBackColor = True
         '
         'FormInfoEdit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(684, 450)
+        Me.ClientSize = New System.Drawing.Size(684, 462)
+        Me.Controls.Add(Me.ButtonShowAll)
+        Me.Controls.Add(Me.ButtonRemoveDuplicate)
         Me.Controls.Add(Me.ButtonReset)
         Me.Controls.Add(Me.ButtonReloadModList)
         Me.Controls.Add(Me.LabelRely)
@@ -135,4 +159,6 @@ Partial Class FormInfoEdit
     Friend WithEvents LabelRely As Label
     Friend WithEvents ButtonReloadModList As Button
     Friend WithEvents ButtonReset As Button
+    Friend WithEvents ButtonRemoveDuplicate As Button
+    Friend WithEvents ButtonShowAll As Button
 End Class

@@ -83,4 +83,58 @@ Module ModuleModjson
         Next
         Return ModInfo
     End Function
+
+    Public Function ReadModIntroductionjson()
+        Dim jsonContent As String
+        jsonContent = ReadFile(Application.StartupPath & "\MMH\mod.introduction.json")
+        Dim jsonResults As JObject
+        Try
+            jsonResults = JObject.Parse(jsonContent)
+        Catch 'if empty
+            jsonResults = JObject.Parse("{""modid"" : [],""moddisplayinfo"" : {}}")
+        End Try
+        Dim modid As JToken = jsonResults("modid")
+        Dim WorkCountTime As Byte
+        Dim Returner(0 To jsonResults("modid").Count, 0 To 3) As String 'pack result together
+        For Each SingleModID In modid
+            Dim displayname As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("displayname")
+            Dim displaydescription As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("displaydescription")
+            Dim rely As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("rely") 'if muti, separate with space(" ")
+            Returner(WorkCountTime, 0) = SingleModID
+            Returner(WorkCountTime, 1) = displayname
+            Returner(WorkCountTime, 2) = displaydescription
+            Returner(WorkCountTime, 3) = rely
+            WorkCountTime += 1
+        Next
+        Return Returner
+    End Function
+
+    Public Function LoadClassModInfoFileFromjson()
+        Dim jsonNonFormatedContent(,) As String
+        jsonNonFormatedContent = ReadModIntroductionjson() 'get json content
+        Dim jsonFormatedContent As New ClassModInfoFile
+        Dim jsonContent As String
+        jsonContent = ReadFile(Application.StartupPath & "\MMH\mod.introduction.json") 'get modid content
+        Dim jsonResults As JObject
+        Try
+            jsonResults = JObject.Parse(jsonContent)
+        Catch 'if empty
+            jsonResults = JObject.Parse("{""modid"" : [],""moddisplayinfo"" : {}}")
+        End Try
+        Dim modid As JToken = jsonResults("modid")
+        'jsonContent = Nothing
+        'jsonResults = Nothing
+        For i = 0 To UBound(jsonNonFormatedContent) 'format json content
+            Dim SingleModDisplayInfo As New ClassSingleModDisplayInfo With {
+            .displayname = jsonNonFormatedContent(i, 1),
+            .displaydescription = jsonNonFormatedContent(i, 2),
+            .rely = jsonNonFormatedContent(i, 3)
+            }
+            If (CType(SingleModDisplayInfo.displayname, String) = CType(SingleModDisplayInfo.displaydescription, String)) Or (CType(SingleModDisplayInfo.displayname, String) = CType(SingleModDisplayInfo.rely, String)) Then 'this array may has a item with Nothing
+            Else
+                jsonFormatedContent.moddisplayinfo.Add(modid(i), SingleModDisplayInfo)
+            End If
+        Next
+        Return jsonFormatedContent
+    End Function
 End Module
