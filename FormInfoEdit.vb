@@ -13,7 +13,8 @@ Public Class FormInfoEdit
             .displaydescription = InputInfo(1),
             .rely = InputInfo(2)
         }
-        jsonToFile.modid.Add(ModID, NewModDisplayInfo)
+        jsonToFile.modid.Add(ModID)
+        jsonToFile.moddisplayinfo.Add(ModID, NewModDisplayInfo)
         'WriteFile(Application.StartupPath & "\MMH\mod.introduction.json", Replace(JsonConvert.SerializeObject(jsonToFile), "\", ""))
         WriteFile(Application.StartupPath & "\MMH\mod.introduction.json", JsonConvert.SerializeObject(jsonToFile))
     End Sub
@@ -22,30 +23,18 @@ Public Class FormInfoEdit
         Dim jsonContent As String
         jsonContent = ReadFile(Application.StartupPath & "\MMH\mod.introduction.json")
         Dim jsonResults As JObject = JObject.Parse(jsonContent)
-        Dim modid As String = jsonResults("modid")
+        Dim modid As JToken = jsonResults("modid")
         Dim WorkCountTime As Byte
         Dim Returner(0 To jsonResults("modid").Count, 0 To 2) As String 'pack result together
 
         For Each SingleModID In modid
 
-            Dim displayname As String = jsonResults("modid")("displayname")
-            Dim displaydescription As String = jsonResults("modid")("displaydescription")
-            Dim jsonArray As JArray = jsonResults("modid")("rely") 'change the array of rely into JArry
-            Dim rely As New List(Of String) 'create a new list to save the contents
-            If jsonContent.Contains("""authors"": [") Then 'checl if there is authors info in json
-                For Each i As JToken In jsonArray
-                    rely.Add(i.ToString)
-                Next
-            Else
-                rely.Add(" ") 'prevent error
-            End If
+            Dim displayname As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("displayname")
+            Dim displaydescription As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("displaydescription")
+            Dim rely As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("rely") 'if muti, separate with space(" ")
             Returner(WorkCountTime, 0) = displayname
             Returner(WorkCountTime, 1) = displaydescription
-            For i = 0 To rely.Count - 1 'rely auther to a single String
-                Returner(WorkCountTime, 2) += rely(i) & " "
-            Next
-            Returner(WorkCountTime, 2).Trim()
-
+            Returner(WorkCountTime, 2) = rely
 
             WorkCountTime += 1
         Next
