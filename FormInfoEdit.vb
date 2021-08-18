@@ -4,7 +4,7 @@ Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
 Public Class FormInfoEdit
-    Dim ModSourceInfo(,), ModDisplayInfo(,) As String
+    Dim ModSourceInfo(,), ModDisplayInfo(,), ModDisplayID() As String
     Dim jsonToFile As New ClassModInfoFile
 
     Private Sub FormInfoEdit_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -15,8 +15,7 @@ Public Class FormInfoEdit
     Private Sub WriteModDisplayInfo(InputInfo, ModID)
         Dim NewModDisplayInfo As New ClassSingleModDisplayInfo With {
             .displayname = InputInfo(0),
-            .displaydescription = InputInfo(1),
-            .rely = InputInfo(2)
+            .displaydescription = InputInfo(1)
         }
         jsonToFile.modid.Add(ModID)
         jsonToFile.moddisplayinfo.Add(ModID, NewModDisplayInfo)
@@ -26,13 +25,14 @@ Public Class FormInfoEdit
     Private Sub ReflashModInfo()
         ModSourceInfo = ReflashNewAllModInfo()
         ModDisplayInfo = ReadModIntroductionjson()
+        ModDisplayID = ReadModIDFromIntroductionjson()
         For i = 0 To UBound(ModSourceInfo)
             ListBoxListMod.Items.Add(System.IO.Path.GetFileName(ModSourceInfo(i, 0)))
         Next
     End Sub
 
     Private Sub TextBoxInfoInput_TextChanged(sender As Object, e As EventArgs) Handles TextBoxInfoInput.TextChanged
-        If TextBoxInfoInput.Lines.Count = 4 And ListBoxListMod.Items.Count <> 0 Then
+        If TextBoxInfoInput.Lines.Count = 3 And ListBoxListMod.Items.Count <> 0 Then
             Dim ModSourceInfoDisplayIndex As Byte
             For ModSourceInfoDisplayIndex = 0 To UBound(ModSourceInfo) 'find which index of content from source json can match the SelectedIndex
                 If Path.GetFileName(ModSourceInfo(ModSourceInfoDisplayIndex, 0)) = ListBoxListMod.SelectedItem Then
@@ -89,7 +89,7 @@ Public Class FormInfoEdit
             Catch
                 ModIntroduceInfoDisplayIndex = 233 '反正返回啥下面都会catch
             End Try
-            Dim displayname, displaydescription, rely As String
+            Dim displayname, displaydescription As String
             Try
                 displayname = ModDisplayInfo(ModIntroduceInfoDisplayIndex, 1)
             Catch
@@ -100,14 +100,9 @@ Public Class FormInfoEdit
             Catch
                 displaydescription = ""
             End Try
-            Try
-                rely = ModDisplayInfo(ModIntroduceInfoDisplayIndex, 3)
-            Catch
-                rely = ""
-            End Try
             LabelModInfo.Text += "displayname : " & displayname & vbCrLf
             LabelModInfo.Text += "displaydescription : " & displaydescription & vbCrLf
-            LabelModInfo.Text += "rely : " & rely & vbCrLf
+            LabelModInfo.Text += "depend(s) : " & ModSourceInfo(ModSourceInfoDisplayIndex, 6) & vbCrLf
             LabelModInfo.Text += "id : " & ModSourceInfo(ModSourceInfoDisplayIndex, 1) & vbCrLf
             LabelModInfo.Text += "version : " & ModSourceInfo(ModSourceInfoDisplayIndex, 2) & vbCrLf
             LabelModInfo.Text += "name : " & ModSourceInfo(ModSourceInfoDisplayIndex, 3) & vbCrLf
@@ -122,6 +117,7 @@ Public Class FormInfoEdit
 
     Private Sub ButtonReset_Click(sender As Object, e As EventArgs) Handles ButtonReset.Click
         jsonToFile.modid.Clear()
+        Erase ModDisplayID
         WriteFile(Application.StartupPath & "\MMH\mod.introduction.json", JsonConvert.SerializeObject(jsonToFile))
     End Sub
 End Class

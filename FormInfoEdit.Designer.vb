@@ -27,7 +27,6 @@ Partial Class FormInfoEdit
         Me.LabelName = New System.Windows.Forms.Label()
         Me.LabelDescription = New System.Windows.Forms.Label()
         Me.LabelModInfo = New System.Windows.Forms.Label()
-        Me.LabelRely = New System.Windows.Forms.Label()
         Me.ButtonReloadModList = New System.Windows.Forms.Button()
         Me.ButtonReset = New System.Windows.Forms.Button()
         Me.ButtonRemoveDuplicate = New System.Windows.Forms.Button()
@@ -80,15 +79,6 @@ Partial Class FormInfoEdit
         Me.LabelModInfo.TabIndex = 4
         Me.LabelModInfo.Text = "Label1"
         '
-        'LabelRely
-        '
-        Me.LabelRely.AutoSize = True
-        Me.LabelRely.Location = New System.Drawing.Point(367, 374)
-        Me.LabelRely.Name = "LabelRely"
-        Me.LabelRely.Size = New System.Drawing.Size(29, 12)
-        Me.LabelRely.TabIndex = 5
-        Me.LabelRely.Text = "Rely"
-        '
         'ButtonReloadModList
         '
         Me.ButtonReloadModList.Font = New System.Drawing.Font("宋体", 13.0!)
@@ -138,7 +128,6 @@ Partial Class FormInfoEdit
         Me.Controls.Add(Me.ButtonRemoveDuplicate)
         Me.Controls.Add(Me.ButtonReset)
         Me.Controls.Add(Me.ButtonReloadModList)
-        Me.Controls.Add(Me.LabelRely)
         Me.Controls.Add(Me.LabelModInfo)
         Me.Controls.Add(Me.LabelDescription)
         Me.Controls.Add(Me.LabelName)
@@ -156,7 +145,6 @@ Partial Class FormInfoEdit
     Friend WithEvents LabelName As Label
     Friend WithEvents LabelDescription As Label
     Friend WithEvents LabelModInfo As Label
-    Friend WithEvents LabelRely As Label
     Friend WithEvents ButtonReloadModList As Button
     Friend WithEvents ButtonReset As Button
     Friend WithEvents ButtonRemoveDuplicate As Button

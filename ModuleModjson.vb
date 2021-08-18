@@ -55,7 +55,7 @@ Module ModuleModjson
         Else
             authors.Add(" ") 'prevent error
         End If
-        Dim Returner(0 To 4) As String 'pack result together
+        Dim Returner(0 To 5) As String 'pack result together
         Returner(0) = id
         Returner(1) = version
         Returner(2) = name
@@ -63,15 +63,57 @@ Module ModuleModjson
         For i = 0 To authors.Count - 1 'combine auther to a single String
             Returner(4) += authors(i) & " "
         Next
-        Returner(4).Trim()
+        Try
+            If Returner(4) <> Nothing Then Returner(4).Trim()
+        Catch exception As System.NullReferenceException
+            Returner(4) = ""
+        End Try
+        Returner(5) = ExtractModRelyFromIntroductionjsonContent(jsonContent)
         Return Returner
+    End Function
+
+    Public Function ExtractModRelyFromIntroductionjsonContent(jsonContent As String)
+        Dim LineNum As Byte
+        For LineNum = 0 To UBound(jsonContent.Split(vbCrLf)) 'find where is depends line
+            If jsonContent.Split(vbCrLf)(LineNum).Contains("depends") Then
+                LineNum += 1 'next line contain modid of depents
+                Exit For
+            End If
+        Next
+        Dim depends As String = ""
+        For CheckNum = LineNum To UBound(jsonContent.Split(vbCrLf))
+            Dim FirstQuotationMarks, SecondQuotationMarks As Byte
+            For FirstQuotationMarks = 1 To Len(jsonContent.Split(vbCrLf)(LineNum)) - 1
+                If Mid(jsonContent.Split(vbCrLf)(LineNum), FirstQuotationMarks, 1) = """" Then
+                    Exit For
+                End If
+            Next
+            For SecondQuotationMarks = FirstQuotationMarks + 1 To Len(jsonContent.Split(vbCrLf)(LineNum)) - 1
+                If Mid(jsonContent.Split(vbCrLf)(LineNum), SecondQuotationMarks, 1) = """" Then
+                    Exit For
+                End If
+            Next
+            Dim NewInfo As String
+            NewInfo = Mid(jsonContent.Split(vbCrLf)(LineNum), FirstQuotationMarks + 1, SecondQuotationMarks - FirstQuotationMarks - 1) & " "
+            If Not NewInfo.Contains("fabricload") Then depends += NewInfo 'do not add fabricload
+        Next
+        depends.Trim()
+        Return depends
+    End Function
+
+    Public Function GetModInfo(ByVal ModPath As String)
+        Dim jsonPath As String
+        jsonPath = ExtractFabricModjson(ModPath)
+        Dim ResultList() As String
+        ResultList = ExtractModInfoFromjson(jsonPath)
+        Return ResultList
     End Function
 
     Public Function ReflashNewAllModInfo()
         'to extract mod info from itself
         Dim FilePath() As String
         FilePath = ListFileNameInFloder(Application.StartupPath & "\MMH\not-loaded-mods\")
-        Dim ModInfo(0 To UBound(FilePath), 0 To 5) As String '第二维为0时储存mod路径，剩下的按顺序存储信息
+        Dim ModInfo(0 To UBound(FilePath), 0 To 6) As String '第二维为0时储存mod路径，剩下的按 id version name description authers depends 顺序存储信息
         For i = 0 To UBound(FilePath)
             Dim ResultList() As String
             ResultList = GetModInfo(FilePath(i))
@@ -95,7 +137,7 @@ Module ModuleModjson
         End Try
         Dim modid As JToken = jsonResults("modid")
         Dim WorkCountTime As Byte
-        Dim Returner(0 To jsonResults("modid").Count, 0 To 3) As String 'pack result together
+        Dim Returner(0 To jsonResults("modid").Count, 0 To 2) As String 'pack result together
         For Each SingleModID In modid
             Dim displayname As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("displayname")
             Dim displaydescription As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("displaydescription")
@@ -103,7 +145,6 @@ Module ModuleModjson
             Returner(WorkCountTime, 0) = SingleModID
             Returner(WorkCountTime, 1) = displayname
             Returner(WorkCountTime, 2) = displaydescription
-            Returner(WorkCountTime, 3) = rely
             WorkCountTime += 1
         Next
         Return Returner
@@ -127,14 +168,32 @@ Module ModuleModjson
         For i = 0 To UBound(jsonNonFormatedContent) 'format json content
             Dim SingleModDisplayInfo As New ClassSingleModDisplayInfo With {
             .displayname = jsonNonFormatedContent(i, 1),
-            .displaydescription = jsonNonFormatedContent(i, 2),
-            .rely = jsonNonFormatedContent(i, 3)
+            .displaydescription = jsonNonFormatedContent(i, 2)
             }
-            If (CType(SingleModDisplayInfo.displayname, String) = CType(SingleModDisplayInfo.displaydescription, String)) Or (CType(SingleModDisplayInfo.displayname, String) = CType(SingleModDisplayInfo.rely, String)) Then 'this array may has a item with Nothing
+            If CType(SingleModDisplayInfo.displayname, String) = CType(SingleModDisplayInfo.displaydescription, String) Then 'this array may has a item with Nothing
             Else
                 jsonFormatedContent.moddisplayinfo.Add(modid(i), SingleModDisplayInfo)
             End If
         Next
         Return jsonFormatedContent
+    End Function
+
+    Public Function ReadModIDFromIntroductionjson()
+        Dim jsonContent As String
+        jsonContent = ReadFile(Application.StartupPath & "\MMH\mod.introduction.json")
+        Dim jsonResults As JObject
+        Try
+            jsonResults = JObject.Parse(jsonContent)
+        Catch 'if empty
+            jsonResults = JObject.Parse("{""modid"" : [],""moddisplayinfo"" : {}}")
+        End Try
+        Dim modid As JToken = jsonResults("modid")
+        Dim ModIDList(0 To jsonResults("modid").Count) As String
+        Dim WorkCountTime As Byte
+        For Each SingleModID In modid
+            ModIDList(WorkCountTime) = SingleModID
+            WorkCountTime += 1
+        Next
+        Return ModIDList
     End Function
 End Module

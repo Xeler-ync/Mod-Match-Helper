@@ -28,6 +28,7 @@ Partial Class FormMain
         Me.ButtonTest1 = New System.Windows.Forms.Button()
         Me.ButtonMCBBS = New System.Windows.Forms.Button()
         Me.ButtonCurseForge = New System.Windows.Forms.Button()
+        Me.Buttontest2 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'CheckedListBoxSelectMods
@@ -53,7 +54,7 @@ Partial Class FormMain
         Me.LabelModInfo.Font = New System.Drawing.Font("宋体", 12.0!)
         Me.LabelModInfo.Location = New System.Drawing.Point(542, 33)
         Me.LabelModInfo.Name = "LabelModInfo"
-        Me.LabelModInfo.Size = New System.Drawing.Size(213, 164)
+        Me.LabelModInfo.Size = New System.Drawing.Size(213, 289)
         Me.LabelModInfo.TabIndex = 2
         Me.LabelModInfo.Text = "Label1"
         '
@@ -69,28 +70,38 @@ Partial Class FormMain
         'ButtonMCBBS
         '
         Me.ButtonMCBBS.Font = New System.Drawing.Font("宋体", 25.0!)
-        Me.ButtonMCBBS.Location = New System.Drawing.Point(544, 225)
+        Me.ButtonMCBBS.Location = New System.Drawing.Point(545, 325)
         Me.ButtonMCBBS.Name = "ButtonMCBBS"
         Me.ButtonMCBBS.Size = New System.Drawing.Size(210, 51)
         Me.ButtonMCBBS.TabIndex = 4
-        Me.ButtonMCBBS.Text = "MCBBS"
+        Me.ButtonMCBBS.Text = "MC百科"
         Me.ButtonMCBBS.UseVisualStyleBackColor = True
         '
         'ButtonCurseForge
         '
         Me.ButtonCurseForge.Font = New System.Drawing.Font("宋体", 25.0!)
-        Me.ButtonCurseForge.Location = New System.Drawing.Point(544, 285)
+        Me.ButtonCurseForge.Location = New System.Drawing.Point(545, 385)
         Me.ButtonCurseForge.Name = "ButtonCurseForge"
         Me.ButtonCurseForge.Size = New System.Drawing.Size(210, 51)
         Me.ButtonCurseForge.TabIndex = 5
         Me.ButtonCurseForge.Text = "CurseForge"
         Me.ButtonCurseForge.UseVisualStyleBackColor = True
         '
+        'Buttontest2
+        '
+        Me.Buttontest2.Location = New System.Drawing.Point(161, 376)
+        Me.Buttontest2.Name = "Buttontest2"
+        Me.Buttontest2.Size = New System.Drawing.Size(119, 59)
+        Me.Buttontest2.TabIndex = 6
+        Me.Buttontest2.Text = "Button1"
+        Me.Buttontest2.UseVisualStyleBackColor = True
+        '
         'FormMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.Buttontest2)
         Me.Controls.Add(Me.ButtonCurseForge)
         Me.Controls.Add(Me.ButtonMCBBS)
         Me.Controls.Add(Me.ButtonTest1)
@@ -109,4 +120,5 @@ Partial Class FormMain
     Friend WithEvents ButtonTest1 As Button
     Friend WithEvents ButtonMCBBS As Button
     Friend WithEvents ButtonCurseForge As Button
+    Friend WithEvents Buttontest2 As Button
 End Class

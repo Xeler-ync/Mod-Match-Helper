@@ -25,12 +25,4 @@
         Next
         Return FilePath
     End Function
-
-    Public Function GetModInfo(ByVal ModPath As String)
-        Dim jsonPath As String
-        jsonPath = ExtractFabricModjson(ModPath)
-        Dim ResultList() As String
-        ResultList = ExtractModInfoFromjson(jsonPath)
-        Return ResultList
-    End Function
 End Module
