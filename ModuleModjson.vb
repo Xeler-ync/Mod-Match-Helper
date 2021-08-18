@@ -4,6 +4,7 @@ Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
 Module ModuleModjson
+    Public ModListWithFullInfo As New ClassModListWithFullInfo
     Public Function ExtractFabricModjson(ByVal ModPath As String) 'to extract mod info from itself
         ' Almost copied from MS official document
         Dim ExtractPath As String
@@ -38,38 +39,27 @@ Module ModuleModjson
         Return jsonFilePath
     End Function
 
-    Public Function ExtractModInfoFromjson(jsonPath As String) 'to extract mod info from itself
+    Public Function ExtractModInfoFromjson(jsonPath As String, ProcessingModFullInfo As ClassModFullInfo) 'to extract mod info from itself
         Dim jsonContent As String
         jsonContent = ReadFile(jsonPath)
         Dim jsonResults As JObject = JObject.Parse(jsonContent)
-        Dim id As String = jsonResults("id")
-        Dim version As String = jsonResults("version")
-        Dim name As String = jsonResults("name")
-        Dim description As String = jsonResults("description")
+        ProcessingModFullInfo.id = jsonResults("id")
+        ProcessingModFullInfo.version = jsonResults("version")
+        ProcessingModFullInfo.name = jsonResults("name")
+        ProcessingModFullInfo.description = jsonResults("description")
         Dim jsonArray As JArray = jsonResults("authors") 'change the array of authors into JArry
-        Dim authors As New List(Of String) 'create a new list to save the contents
+        'Dim authors As New List(Of String) 'create a new list to save the contents
         If jsonContent.Contains("""authors"": [") Then 'checl if there is authors info in json
             For Each i As JToken In jsonArray
-                authors.Add(i.ToString)
+                ReDim Preserve ProcessingModFullInfo.authersArray(0 To jsonArray.Count - 1)
+                ProcessingModFullInfo.authersArray(UBound(ProcessingModFullInfo.authersArray)) = i.ToString
             Next
         Else
-            authors.Add(" ") 'prevent error
+            ReDim Preserve ProcessingModFullInfo.authersArray(0 To 1)
+            ProcessingModFullInfo.authersArray(UBound(ProcessingModFullInfo.authersArray)) = "" 'prevent error
         End If
-        Dim Returner(0 To 5) As String 'pack result together
-        Returner(0) = id
-        Returner(1) = version
-        Returner(2) = name
-        Returner(3) = description
-        For i = 0 To authors.Count - 1 'combine auther to a single String
-            Returner(4) += authors(i) & " "
-        Next
-        Try
-            If Returner(4) <> Nothing Then Returner(4).Trim()
-        Catch exception As System.NullReferenceException
-            Returner(4) = ""
-        End Try
-        Returner(5) = ExtractModRelyFromIntroductionjsonContent(jsonContent)
-        Return Returner
+        ProcessingModFullInfo.dependsArray = ExtractModRelyFromIntroductionjsonContent(jsonContent).Split(" ")
+        Return ProcessingModFullInfo
     End Function
 
     Public Function ExtractModRelyFromIntroductionjsonContent(jsonContent As String)
@@ -97,36 +87,40 @@ Module ModuleModjson
             NewInfo = Mid(jsonContent.Split(vbCrLf)(LineNum), FirstQuotationMarks + 1, SecondQuotationMarks - FirstQuotationMarks - 1) & " "
             If Not NewInfo.Contains("fabricload") Then depends += NewInfo 'do not add fabricload
         Next
-        depends.Trim()
+        depends.Trim().Split(" ")
         Return depends
     End Function
 
-    Public Function GetModInfo(ByVal ModPath As String)
+    Public Function GetModSoruceInfo(ModPath As String, ProcessingModFullInfo As ClassModFullInfo)
         Dim jsonPath As String
         jsonPath = ExtractFabricModjson(ModPath)
-        Dim ResultList() As String
-        ResultList = ExtractModInfoFromjson(jsonPath)
-        Return ResultList
+        ProcessingModFullInfo = ExtractModInfoFromjson(jsonPath, ProcessingModFullInfo)
+        Return ProcessingModFullInfo
     End Function
 
-    Public Function ReflashNewAllModInfo()
-        'to extract mod info from itself
+    Public Function ReflashModListWithFullInfo(ProcessingModListWithFullInfo As ClassModListWithFullInfo)
+        ProcessingModListWithFullInfo = ReflashNewAllModInfo(ProcessingModListWithFullInfo)
+        'ReadModIntroductionjson =
+        Return ProcessingModListWithFullInfo
+    End Function
+
+    Public Function ReflashNewAllModInfo(ProcessingModListWithFullInfo As ClassModListWithFullInfo) 'to extract mod info from itself
         Dim FilePath() As String
         FilePath = ListFileNameInFloder(Application.StartupPath & "\MMH\not-loaded-mods\")
-        Dim ModInfo(0 To UBound(FilePath), 0 To 6) As String '第二维为0时储存mod路径，剩下的按 id version name description authers depends 顺序存储信息
+        Dim ModInfo(0 To UBound(FilePath), 0 To 6) As String
+        ProcessingModListWithFullInfo.modid.Clear()
+        ProcessingModListWithFullInfo.moddisplayinfo.Clear()
         For i = 0 To UBound(FilePath)
-            Dim ResultList() As String
-            ResultList = GetModInfo(FilePath(i))
-            ModInfo(i, 0) = FilePath(i)
-            Dim InfoIndex As Byte
-            For InfoIndex = 0 To UBound(ResultList)
-                ModInfo(i, InfoIndex + 1) = ResultList(InfoIndex)
-            Next
+            Dim SingleModFullInfo As New ClassModFullInfo
+            SingleModFullInfo = GetModSoruceInfo(FilePath(i), SingleModFullInfo)
+            SingleModFullInfo.ModPath = FilePath(i)
+            ProcessingModListWithFullInfo.modid.Add(SingleModFullInfo.id)
+            ProcessingModListWithFullInfo.moddisplayinfo.Add(SingleModFullInfo.id, SingleModFullInfo)
         Next
-        Return ModInfo
+        Return ProcessingModListWithFullInfo
     End Function
 
-    Public Function ReadModIntroductionjson()
+    Public Function ReadModIntroductionjson(ProcessingModListWithFullInfo As ClassModListWithFullInfo)
         Dim jsonContent As String
         jsonContent = ReadFile(Application.StartupPath & "\MMH\mod.introduction.json")
         Dim jsonResults As JObject
@@ -136,23 +130,16 @@ Module ModuleModjson
             jsonResults = JObject.Parse("{""modid"" : [],""moddisplayinfo"" : {}}")
         End Try
         Dim modid As JToken = jsonResults("modid")
-        Dim WorkCountTime As Byte
-        Dim Returner(0 To jsonResults("modid").Count, 0 To 2) As String 'pack result together
         For Each SingleModID In modid
-            Dim displayname As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("displayname")
-            Dim displaydescription As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("displaydescription")
-            Dim rely As String = jsonResults("moddisplayinfo")(SingleModID.ToString)("rely") 'if muti, separate with space(" ")
-            Returner(WorkCountTime, 0) = SingleModID
-            Returner(WorkCountTime, 1) = displayname
-            Returner(WorkCountTime, 2) = displaydescription
-            WorkCountTime += 1
+            ProcessingModListWithFullInfo.moddisplayinfo(SingleModID.ToString).displayname = jsonResults("moddisplayinfo")(SingleModID.ToString)("displayname")
+            ProcessingModListWithFullInfo.moddisplayinfo(SingleModID.ToString).displaydescription = jsonResults("moddisplayinfo")(SingleModID.ToString)("displaydescription")
         Next
-        Return Returner
+        Return ProcessingModListWithFullInfo
     End Function
 
-    Public Function LoadClassModInfoFileFromjson()
+    Public Function LoadClassModInfoFileFromjson(ProcessingModListWithFullInfo As ClassModListWithFullInfo)
         Dim jsonNonFormatedContent(,) As String
-        jsonNonFormatedContent = ReadModIntroductionjson() 'get json content
+        ProcessingModListWithFullInfo = ReadModIntroductionjson(ProcessingModListWithFullInfo) 'get json content
         Dim jsonFormatedContent As New ClassModInfoFile
         Dim jsonContent As String
         jsonContent = ReadFile(Application.StartupPath & "\MMH\mod.introduction.json") 'get modid content

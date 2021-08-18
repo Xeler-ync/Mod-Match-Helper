@@ -25,4 +25,15 @@
         Next
         Return FilePath
     End Function
+
+    Public Function ConnectStrArrayToString(Array() As String)
+        Dim ProcessingString As String = ""
+        If Array.Length > 0 Then
+            For Each i In Array
+                ProcessingString += i & " "
+            Next
+            ProcessingString.Trim()
+        End If
+        Return ProcessingString
+    End Function
 End Module

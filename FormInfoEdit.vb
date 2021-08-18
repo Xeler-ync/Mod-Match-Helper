@@ -4,12 +4,12 @@ Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
 Public Class FormInfoEdit
-    Dim ModSourceInfo(,), ModDisplayInfo(,), ModDisplayID() As String
+    'Dim ModSourceInfo(,), ModDisplayInfo(,), ModDisplayID() As String
     Dim jsonToFile As New ClassModInfoFile
 
     Private Sub FormInfoEdit_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ReflashModListBox(0)
-        jsonToFile = LoadClassModInfoFileFromjson()
+        'jsonToFile = LoadClassModInfoFileFromjson(ModListWithFullInfo)
     End Sub
 
     Private Sub WriteModDisplayInfo(InputInfo, ModID)
@@ -23,23 +23,22 @@ Public Class FormInfoEdit
     End Sub
 
     Private Sub ReflashModInfo()
-        ModSourceInfo = ReflashNewAllModInfo()
-        ModDisplayInfo = ReadModIntroductionjson()
-        ModDisplayID = ReadModIDFromIntroductionjson()
-        For i = 0 To UBound(ModSourceInfo)
-            ListBoxListMod.Items.Add(System.IO.Path.GetFileName(ModSourceInfo(i, 0)))
+        ModListWithFullInfo = ReflashNewAllModInfo(ModListWithFullInfo)
+        ModListWithFullInfo = ReadModIntroductionjson(ModListWithFullInfo)
+        For i = 0 To ModListWithFullInfo.modid.Count - 1
+            ListBoxListMod.Items.Add(System.IO.Path.GetFileName(ModListWithFullInfo.moddisplayinfo(ModListWithFullInfo.modid(i)).ModPath))
         Next
     End Sub
 
     Private Sub TextBoxInfoInput_TextChanged(sender As Object, e As EventArgs) Handles TextBoxInfoInput.TextChanged
         If TextBoxInfoInput.Lines.Count = 3 And ListBoxListMod.Items.Count <> 0 Then
-            Dim ModSourceInfoDisplayIndex As Byte
-            For ModSourceInfoDisplayIndex = 0 To UBound(ModSourceInfo) 'find which index of content from source json can match the SelectedIndex
-                If Path.GetFileName(ModSourceInfo(ModSourceInfoDisplayIndex, 0)) = ListBoxListMod.SelectedItem Then
+            For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
+                If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = ListBoxListMod.SelectedItem Then 'save input
+                    ModListWithFullInfo.moddisplayinfo(modid).displayname = TextBoxInfoInput.Lines(0)
+                    ModListWithFullInfo.moddisplayinfo(modid).displaydescription = TextBoxInfoInput.Lines(1)
                     Exit For
                 End If
             Next
-            WriteModDisplayInfo(TextBoxInfoInput.Lines, ModSourceInfo(ModSourceInfoDisplayIndex, 1))
             TextBoxInfoInput.Text = ""
             ListBoxListMod.Items.RemoveAt(ListBoxListMod.SelectedIndex)
         End If
@@ -50,13 +49,10 @@ Public Class FormInfoEdit
         ListBoxListMod.Items.Clear()
         ReflashModInfo()
         If Mode = 0 Then 'remove duplicate
-            For i = 0 To UBound(ModSourceInfo) 'to check if it has been edited 
-                For ii = 0 To UBound(ModDisplayInfo)
-                    If ModSourceInfo(i, 1) = ModDisplayInfo(ii, 0) Then
-                        ListBoxListMod.Items.Remove(Path.GetFileName(ModSourceInfo(i, 0)))
-                        Exit For
-                    End If
-                Next
+            For i = 0 To ModListWithFullInfo.modid.Count - 1 'to check if it has been edited 
+                If ModListWithFullInfo.moddisplayinfo(ModListWithFullInfo.modid(i)).displaydescription <> "" And ModListWithFullInfo.moddisplayinfo(ModListWithFullInfo.modid(i)).displaydescription <> "" Then
+                    ListBoxListMod.Items.Remove(Path.GetFileName(ModListWithFullInfo.moddisplayinfo(ModListWithFullInfo.modid(i)).ModPath))
+                End If
             Next
         ElseIf Mode = 1 Then
             'nothing to do, just say hellow
@@ -69,45 +65,25 @@ Public Class FormInfoEdit
     End Sub
 
     Private Sub ListBoxListMod_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBoxListMod.SelectedIndexChanged 'display mod info
+        LabelModInfo.Text = ""
         If ListBoxListMod.SelectedIndex = -1 Then
             TextBoxInfoInput.Enabled = False
         Else
             TextBoxInfoInput.Enabled = True
             LabelModInfo.Text = ""
-            Dim ModSourceInfoDisplayIndex, ModIntroduceInfoDisplayIndex As Byte
-            For ModSourceInfoDisplayIndex = 0 To UBound(ModSourceInfo) 'find which index of content from source json can match the SelectedIndex
-                If Path.GetFileName(ModSourceInfo(ModSourceInfoDisplayIndex, 0)) = ListBoxListMod.SelectedItem Then
+            For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
+                If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = ListBoxListMod.SelectedItem Then 'save input
+                    LabelModInfo.Text += "displayname : " & ModListWithFullInfo.moddisplayinfo(modid).displayname & vbCrLf
+                    LabelModInfo.Text += "displaydescription : " & ModListWithFullInfo.moddisplayinfo(modid).displaydescription & vbCrLf
+                    LabelModInfo.Text += "depend(s) : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).dependsArray) & vbCrLf
+                    LabelModInfo.Text += "id : " & ModListWithFullInfo.moddisplayinfo(modid).id & vbCrLf
+                    LabelModInfo.Text += "version : " & ModListWithFullInfo.moddisplayinfo(modid).version & vbCrLf
+                    LabelModInfo.Text += "name : " & ModListWithFullInfo.moddisplayinfo(modid).name & vbCrLf
+                    LabelModInfo.Text += "author(s) : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).authersArray) & vbCrLf
+                    LabelModInfo.Text += "description : " & ModListWithFullInfo.moddisplayinfo(modid).description
                     Exit For
                 End If
             Next
-            Try
-                For ModIntroduceInfoDisplayIndex = 0 To UBound(ModSourceInfo) 'find which index of content from introduce json can match the SelectedIndex
-                    If ModDisplayInfo(ModIntroduceInfoDisplayIndex, 0) = ModSourceInfo(ModSourceInfoDisplayIndex, 1) Then
-                        Exit For
-                    End If
-                Next
-            Catch
-                ModIntroduceInfoDisplayIndex = 233 '反正返回啥下面都会catch
-            End Try
-            Dim displayname, displaydescription As String
-            Try
-                displayname = ModDisplayInfo(ModIntroduceInfoDisplayIndex, 1)
-            Catch
-                displayname = ""
-            End Try
-            Try
-                displaydescription = ModDisplayInfo(ModIntroduceInfoDisplayIndex, 2)
-            Catch
-                displaydescription = ""
-            End Try
-            LabelModInfo.Text += "displayname : " & displayname & vbCrLf
-            LabelModInfo.Text += "displaydescription : " & displaydescription & vbCrLf
-            LabelModInfo.Text += "depend(s) : " & ModSourceInfo(ModSourceInfoDisplayIndex, 6) & vbCrLf
-            LabelModInfo.Text += "id : " & ModSourceInfo(ModSourceInfoDisplayIndex, 1) & vbCrLf
-            LabelModInfo.Text += "version : " & ModSourceInfo(ModSourceInfoDisplayIndex, 2) & vbCrLf
-            LabelModInfo.Text += "name : " & ModSourceInfo(ModSourceInfoDisplayIndex, 3) & vbCrLf
-            LabelModInfo.Text += "author(s) : " & ModSourceInfo(ModSourceInfoDisplayIndex, 5) & vbCrLf
-            LabelModInfo.Text += "description : " & ModSourceInfo(ModSourceInfoDisplayIndex, 4)
         End If
     End Sub
 
@@ -117,7 +93,7 @@ Public Class FormInfoEdit
 
     Private Sub ButtonReset_Click(sender As Object, e As EventArgs) Handles ButtonReset.Click
         jsonToFile.modid.Clear()
-        Erase ModDisplayID
+        jsonToFile.moddisplayinfo.Clear()
         WriteFile(Application.StartupPath & "\MMH\mod.introduction.json", JsonConvert.SerializeObject(jsonToFile))
     End Sub
 End Class

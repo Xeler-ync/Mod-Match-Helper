@@ -5,6 +5,8 @@ Imports Newtonsoft.Json.Linq
 
 Public Class FormMain
     Dim ModSourceInfo(,), ModDisplayInfo(,) As String
+
+
     Private Sub FormMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     End Sub
     Private Function RunCmd(ByVal StrCommand As String) As String
@@ -25,49 +27,28 @@ Public Class FormMain
     End Function
 
     Private Sub ReflashModInfo()
-        ModSourceInfo = ReflashNewAllModInfo()
-        ModDisplayInfo = ReadModIntroductionjson()
-        For i = 0 To UBound(ModSourceInfo)
-            CheckedListBoxSelectMods.Items.Add(System.IO.Path.GetFileName(ModSourceInfo(i, 0)))
+        ModListWithFullInfo = ReflashNewAllModInfo(ModListWithFullInfo)
+        ModListWithFullInfo = ReadModIntroductionjson(ModListWithFullInfo)
+        For i = 0 To ModListWithFullInfo.modid.Count
+            CheckedListBoxSelectMods.Items.Add(System.IO.Path.GetFileName(ModListWithFullInfo.moddisplayinfo(ModListWithFullInfo.modid(i)).ModPath))
         Next
     End Sub
 
     Private Sub CheckedListBoxSelectMods_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CheckedListBoxSelectMods.SelectedIndexChanged
         LabelModInfo.Text = ""
-        Dim ModSourceInfoDisplayIndex, ModIntroduceInfoDisplayIndex As Byte
-        For ModSourceInfoDisplayIndex = 0 To UBound(ModSourceInfo) 'find which index of content from source json can match the SelectedIndex
-            If Path.GetFileName(ModSourceInfo(ModSourceInfoDisplayIndex, 0)) = CheckedListBoxSelectMods.SelectedItem Then
+        For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
+            If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = CheckedListBoxSelectMods.SelectedItem Then 'save input
+                LabelModInfo.Text += "displayname : " & ModListWithFullInfo.moddisplayinfo(modid).displayname & vbCrLf
+                LabelModInfo.Text += "displaydescription : " & ModListWithFullInfo.moddisplayinfo(modid).displaydescription & vbCrLf
+                LabelModInfo.Text += "depend(s) : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).dependsArray) & vbCrLf
+                LabelModInfo.Text += "id : " & ModListWithFullInfo.moddisplayinfo(modid).id & vbCrLf
+                LabelModInfo.Text += "version : " & ModListWithFullInfo.moddisplayinfo(modid).version & vbCrLf
+                LabelModInfo.Text += "name : " & ModListWithFullInfo.moddisplayinfo(modid).name & vbCrLf
+                LabelModInfo.Text += "author(s) : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).authersArray) & vbCrLf
+                LabelModInfo.Text += "description : " & ModListWithFullInfo.moddisplayinfo(modid).description
                 Exit For
             End If
         Next
-        Try
-            For ModIntroduceInfoDisplayIndex = 0 To UBound(ModSourceInfo) 'find which index of content from introduce json can match the SelectedIndex
-                If ModDisplayInfo(ModIntroduceInfoDisplayIndex, 0) = ModSourceInfo(ModSourceInfoDisplayIndex, 1) Then
-                    Exit For
-                End If
-            Next
-        Catch
-            ModIntroduceInfoDisplayIndex = 233 '反正返回啥下面都会catch
-        End Try
-        Dim displayname, displaydescription As String
-        Try
-            displayname = ModDisplayInfo(ModIntroduceInfoDisplayIndex, 1)
-        Catch
-            displayname = ""
-        End Try
-        Try
-            displaydescription = ModDisplayInfo(ModIntroduceInfoDisplayIndex, 2)
-        Catch
-            displaydescription = ""
-        End Try
-        LabelModInfo.Text += "名字 : " & displayname & vbCrLf
-        LabelModInfo.Text += "介绍 : " & displaydescription & vbCrLf
-        LabelModInfo.Text += "依赖 : " & ModSourceInfo(ModSourceInfoDisplayIndex, 6) & vbCrLf
-        LabelModInfo.Text += "id : " & ModSourceInfo(ModSourceInfoDisplayIndex, 1) & vbCrLf
-        LabelModInfo.Text += "version : " & ModSourceInfo(ModSourceInfoDisplayIndex, 2) & vbCrLf
-        LabelModInfo.Text += "name : " & ModSourceInfo(ModSourceInfoDisplayIndex, 3) & vbCrLf
-        LabelModInfo.Text += "author(s) : " & ModSourceInfo(ModSourceInfoDisplayIndex, 5) & vbCrLf
-        LabelModInfo.Text += "description : " & ModSourceInfo(ModSourceInfoDisplayIndex, 4)
     End Sub
 
     Private Sub ButtonTest_Click(sender As Object, e As EventArgs) Handles ButtonTest.Click
