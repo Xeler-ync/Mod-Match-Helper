@@ -58,36 +58,54 @@ Module ModuleModjson
             ReDim Preserve ProcessingModFullInfo.authersArray(0 To 1)
             ProcessingModFullInfo.authersArray(UBound(ProcessingModFullInfo.authersArray)) = "" 'prevent error
         End If
-        ProcessingModFullInfo.dependsArray = ExtractModRelyFromIntroductionjsonContent(jsonContent).Split(" ")
+        ProcessingModFullInfo.dependsArray = ExtractModDependFromIntroductionjsonContent(jsonContent)
         Return ProcessingModFullInfo
     End Function
 
-    Public Function ExtractModRelyFromIntroductionjsonContent(jsonContent As String)
+    Public Function ExtractModDependFromIntroductionjsonContent(jsonContent As String)
         Dim LineNum As Byte
-        For LineNum = 0 To UBound(jsonContent.Split(vbCrLf)) 'find where is depends line
-            If jsonContent.Split(vbCrLf)(LineNum).Contains("depends") Then
+        Dim WrapType As String = ""
+        If jsonContent.Contains(vbCrLf) Then
+            WrapType = vbCrLf
+        ElseIf jsonContent.Contains(vbLf) Then
+            WrapType = vbLf
+        ElseIf jsonContent.Contains(vbCr) Then
+            WrapType = vbCr
+        End If
+        For LineNum = 0 To UBound(jsonContent.Split(WrapType)) 'find where is depends line
+            If jsonContent.Split(WrapType)(LineNum).Contains("depends") Then
                 LineNum += 1 'next line contain modid of depents
                 Exit For
             End If
         Next
-        Dim depends As String = ""
-        For CheckNum = LineNum To UBound(jsonContent.Split(vbCrLf))
+        Dim depends() As String = {}
+        For CheckLineNum = LineNum To UBound(jsonContent.Split(WrapType)) - 1
+            If jsonContent.Split(WrapType)(CheckLineNum).Contains("}") Then Exit For
             Dim FirstQuotationMarks, SecondQuotationMarks As Byte
-            For FirstQuotationMarks = 1 To Len(jsonContent.Split(vbCrLf)(LineNum)) - 1
-                If Mid(jsonContent.Split(vbCrLf)(LineNum), FirstQuotationMarks, 1) = """" Then
+            For FirstQuotationMarks = 1 To Len(jsonContent.Split(WrapType)(CheckLineNum)) - 1
+                If Mid(jsonContent.Split(WrapType)(CheckLineNum), FirstQuotationMarks, 1) = """" Then
                     Exit For
                 End If
             Next
-            For SecondQuotationMarks = FirstQuotationMarks + 1 To Len(jsonContent.Split(vbCrLf)(LineNum)) - 1
-                If Mid(jsonContent.Split(vbCrLf)(LineNum), SecondQuotationMarks, 1) = """" Then
+            For SecondQuotationMarks = FirstQuotationMarks + 1 To Len(jsonContent.Split(WrapType)(CheckLineNum)) - 1
+                If Mid(jsonContent.Split(WrapType)(CheckLineNum), SecondQuotationMarks, 1) = """" Then
                     Exit For
                 End If
             Next
             Dim NewInfo As String
-            NewInfo = Mid(jsonContent.Split(vbCrLf)(LineNum), FirstQuotationMarks + 1, SecondQuotationMarks - FirstQuotationMarks - 1) & " "
-            If Not NewInfo.Contains("fabricload") Then depends += NewInfo 'do not add fabricload
+            NewInfo = Mid(jsonContent.Split(WrapType)(CheckLineNum), FirstQuotationMarks + 1, SecondQuotationMarks - FirstQuotationMarks - 1)
+            If (Not NewInfo.Contains("fabric")) And (Not NewInfo.Contains("minecraft")) Then 'do not add fabricload fabric minrcraft
+                For Each i In depends
+                    If i = NewInfo Then
+                        NewInfo = ""
+                    End If
+                Next
+                If NewInfo <> "" Then
+                    ReDim Preserve depends(0 To UBound(depends) + 1)
+                    depends(UBound(depends)) = NewInfo
+                End If
+            End If
         Next
-        depends.Trim().Split(" ")
         Return depends
     End Function
 

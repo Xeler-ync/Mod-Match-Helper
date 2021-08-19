@@ -23,12 +23,12 @@ Partial Class FormMain
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.CheckedListBoxSelectMods = New System.Windows.Forms.CheckedListBox()
-        Me.ButtonTest = New System.Windows.Forms.Button()
         Me.LabelModInfo = New System.Windows.Forms.Label()
         Me.ButtonTest1 = New System.Windows.Forms.Button()
         Me.ButtonMCBBS = New System.Windows.Forms.Button()
         Me.ButtonCurseForge = New System.Windows.Forms.Button()
-        Me.Buttontest2 = New System.Windows.Forms.Button()
+        Me.ButtonReflashModInfo = New System.Windows.Forms.Button()
+        Me.ButtonRemoveUselessDepend = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'CheckedListBoxSelectMods
@@ -37,32 +37,23 @@ Partial Class FormMain
         Me.CheckedListBoxSelectMods.FormattingEnabled = True
         Me.CheckedListBoxSelectMods.Location = New System.Drawing.Point(12, 12)
         Me.CheckedListBoxSelectMods.Name = "CheckedListBoxSelectMods"
-        Me.CheckedListBoxSelectMods.Size = New System.Drawing.Size(497, 324)
+        Me.CheckedListBoxSelectMods.Size = New System.Drawing.Size(243, 324)
         Me.CheckedListBoxSelectMods.TabIndex = 0
-        '
-        'ButtonTest
-        '
-        Me.ButtonTest.Location = New System.Drawing.Point(12, 342)
-        Me.ButtonTest.Name = "ButtonTest"
-        Me.ButtonTest.Size = New System.Drawing.Size(85, 79)
-        Me.ButtonTest.TabIndex = 1
-        Me.ButtonTest.Text = "Button1"
-        Me.ButtonTest.UseVisualStyleBackColor = True
         '
         'LabelModInfo
         '
         Me.LabelModInfo.Font = New System.Drawing.Font("宋体", 12.0!)
-        Me.LabelModInfo.Location = New System.Drawing.Point(542, 33)
+        Me.LabelModInfo.Location = New System.Drawing.Point(261, 12)
         Me.LabelModInfo.Name = "LabelModInfo"
-        Me.LabelModInfo.Size = New System.Drawing.Size(213, 289)
+        Me.LabelModInfo.Size = New System.Drawing.Size(426, 324)
         Me.LabelModInfo.TabIndex = 2
         Me.LabelModInfo.Text = "Label1"
         '
         'ButtonTest1
         '
-        Me.ButtonTest1.Location = New System.Drawing.Point(331, 368)
+        Me.ButtonTest1.Location = New System.Drawing.Point(0, 1)
         Me.ButtonTest1.Name = "ButtonTest1"
-        Me.ButtonTest1.Size = New System.Drawing.Size(120, 44)
+        Me.ButtonTest1.Size = New System.Drawing.Size(18, 19)
         Me.ButtonTest1.TabIndex = 3
         Me.ButtonTest1.Text = "Button1"
         Me.ButtonTest1.UseVisualStyleBackColor = True
@@ -70,9 +61,9 @@ Partial Class FormMain
         'ButtonMCBBS
         '
         Me.ButtonMCBBS.Font = New System.Drawing.Font("宋体", 25.0!)
-        Me.ButtonMCBBS.Location = New System.Drawing.Point(545, 325)
+        Me.ButtonMCBBS.Location = New System.Drawing.Point(477, 342)
         Me.ButtonMCBBS.Name = "ButtonMCBBS"
-        Me.ButtonMCBBS.Size = New System.Drawing.Size(210, 51)
+        Me.ButtonMCBBS.Size = New System.Drawing.Size(210, 44)
         Me.ButtonMCBBS.TabIndex = 4
         Me.ButtonMCBBS.Text = "MC百科"
         Me.ButtonMCBBS.UseVisualStyleBackColor = True
@@ -80,34 +71,43 @@ Partial Class FormMain
         'ButtonCurseForge
         '
         Me.ButtonCurseForge.Font = New System.Drawing.Font("宋体", 25.0!)
-        Me.ButtonCurseForge.Location = New System.Drawing.Point(545, 385)
+        Me.ButtonCurseForge.Location = New System.Drawing.Point(261, 342)
         Me.ButtonCurseForge.Name = "ButtonCurseForge"
-        Me.ButtonCurseForge.Size = New System.Drawing.Size(210, 51)
+        Me.ButtonCurseForge.Size = New System.Drawing.Size(210, 44)
         Me.ButtonCurseForge.TabIndex = 5
         Me.ButtonCurseForge.Text = "CurseForge"
         Me.ButtonCurseForge.UseVisualStyleBackColor = True
         '
-        'Buttontest2
+        'ButtonReflashModInfo
         '
-        Me.Buttontest2.Location = New System.Drawing.Point(161, 376)
-        Me.Buttontest2.Name = "Buttontest2"
-        Me.Buttontest2.Size = New System.Drawing.Size(119, 59)
-        Me.Buttontest2.TabIndex = 6
-        Me.Buttontest2.Text = "Button1"
-        Me.Buttontest2.UseVisualStyleBackColor = True
+        Me.ButtonReflashModInfo.Location = New System.Drawing.Point(12, 342)
+        Me.ButtonReflashModInfo.Name = "ButtonReflashModInfo"
+        Me.ButtonReflashModInfo.Size = New System.Drawing.Size(119, 43)
+        Me.ButtonReflashModInfo.TabIndex = 6
+        Me.ButtonReflashModInfo.Text = "刷新Mod信息"
+        Me.ButtonReflashModInfo.UseVisualStyleBackColor = True
+        '
+        'ButtonRemoveUselessDepend
+        '
+        Me.ButtonRemoveUselessDepend.Location = New System.Drawing.Point(137, 342)
+        Me.ButtonRemoveUselessDepend.Name = "ButtonRemoveUselessDepend"
+        Me.ButtonRemoveUselessDepend.Size = New System.Drawing.Size(118, 44)
+        Me.ButtonRemoveUselessDepend.TabIndex = 7
+        Me.ButtonRemoveUselessDepend.Text = "移除无用前置"
+        Me.ButtonRemoveUselessDepend.UseVisualStyleBackColor = True
         '
         'FormMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
-        Me.Controls.Add(Me.Buttontest2)
+        Me.ClientSize = New System.Drawing.Size(694, 398)
+        Me.Controls.Add(Me.ButtonRemoveUselessDepend)
+        Me.Controls.Add(Me.ButtonReflashModInfo)
         Me.Controls.Add(Me.ButtonCurseForge)
         Me.Controls.Add(Me.ButtonMCBBS)
         Me.Controls.Add(Me.ButtonTest1)
-        Me.Controls.Add(Me.LabelModInfo)
-        Me.Controls.Add(Me.ButtonTest)
         Me.Controls.Add(Me.CheckedListBoxSelectMods)
+        Me.Controls.Add(Me.LabelModInfo)
         Me.Name = "FormMain"
         Me.Text = "Form1"
         Me.ResumeLayout(False)
@@ -115,10 +115,10 @@ Partial Class FormMain
     End Sub
 
     Friend WithEvents CheckedListBoxSelectMods As CheckedListBox
-    Friend WithEvents ButtonTest As Button
     Friend WithEvents LabelModInfo As Label
     Friend WithEvents ButtonTest1 As Button
     Friend WithEvents ButtonMCBBS As Button
     Friend WithEvents ButtonCurseForge As Button
-    Friend WithEvents Buttontest2 As Button
+    Friend WithEvents ButtonReflashModInfo As Button
+    Friend WithEvents ButtonRemoveUselessDepend As Button
 End Class

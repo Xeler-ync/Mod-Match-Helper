@@ -5,20 +5,24 @@ Imports Newtonsoft.Json.Linq
 
 Public Class FormInfoEdit
     'Dim ModSourceInfo(,), ModDisplayInfo(,), ModDisplayID() As String
-    Dim jsonToFile As New ClassModInfoFile
 
     Private Sub FormInfoEdit_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ReflashModListBox(0)
         'jsonToFile = LoadClassModInfoFileFromjson(ModListWithFullInfo)
     End Sub
 
-    Private Sub WriteModDisplayInfo(InputInfo, ModID)
-        Dim NewModDisplayInfo As New ClassSingleModDisplayInfo With {
-            .displayname = InputInfo(0),
-            .displaydescription = InputInfo(1)
-        }
-        jsonToFile.modid.Add(ModID)
-        jsonToFile.moddisplayinfo.Add(ModID, NewModDisplayInfo)
+    Private Sub WriteModDisplayInfo()
+        Dim jsonToFile As New ClassModInfoFile
+        For Each i In ModListWithFullInfo.modid
+            If ModListWithFullInfo.moddisplayinfo(i).displayname <> "" Or ModListWithFullInfo.moddisplayinfo(i).displaydescription <> "" Then
+                Dim NewModDisplayInfo As New ClassSingleModDisplayInfo With {
+                    .displayname = ModListWithFullInfo.moddisplayinfo(i).displayname,
+                    .displaydescription = ModListWithFullInfo.moddisplayinfo(i).displaydescription
+                }
+                jsonToFile.modid.Add(i)
+                jsonToFile.moddisplayinfo.Add(i, NewModDisplayInfo)
+            End If
+        Next
         WriteFile(Application.StartupPath & "\MMH\mod.introduction.json", JsonConvert.SerializeObject(jsonToFile))
     End Sub
 
@@ -39,6 +43,7 @@ Public Class FormInfoEdit
                     Exit For
                 End If
             Next
+            WriteModDisplayInfo()
             TextBoxInfoInput.Text = ""
             ListBoxListMod.Items.RemoveAt(ListBoxListMod.SelectedIndex)
         End If
@@ -92,6 +97,7 @@ Public Class FormInfoEdit
     End Sub
 
     Private Sub ButtonReset_Click(sender As Object, e As EventArgs) Handles ButtonReset.Click
+        Dim jsonToFile As New ClassModInfoFile
         jsonToFile.modid.Clear()
         jsonToFile.moddisplayinfo.Clear()
         WriteFile(Application.StartupPath & "\MMH\mod.introduction.json", JsonConvert.SerializeObject(jsonToFile))
