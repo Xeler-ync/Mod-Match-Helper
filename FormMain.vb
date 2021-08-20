@@ -6,9 +6,35 @@ Imports Newtonsoft.Json.Linq
 Public Class FormMain
     Dim ChoosedDepend As New List(Of String)
     Dim DependModifing As Boolean = False
+    Dim FormPositionOriginalX, FormPositionNowX, FormPositionOriginalY, FormPositionNowY As Integer
 
     Private Sub FormMain_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Me.Visible = False
         ReflashModInfo()
+        Dim PicturePathList() As String = ListFileNameInFloder(Application.StartupPath & "\MMH\background", {".jpg", ".png"})
+        Randomize()
+        Me.BackgroundImage = Image.FromFile(PicturePathList(Int(Rnd(UBound(PicturePathList)))))
+        LabelModInfo.BackColor = Color.FromArgb(127, 255, 255, 255)
+        LabelClickMCbaike.BackColor = Color.FromArgb(127, 255, 255, 255)
+        LabelClickCurseForge.BackColor = Color.FromArgb(127, 255, 255, 255)
+        PanelMoveForm.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod0.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod1.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod2.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod3.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod4.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod5.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod6.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod7.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod8.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod9.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod10.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod11.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod12.BackColor = Color.FromArgb(127, 255, 255, 255)
+        CheckBoxMod13.BackColor = Color.FromArgb(127, 255, 255, 255)
+        GroupBoxModList.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMMH.BackColor = Color.FromArgb(0, 255, 255, 255)
+        Me.Visible = True
     End Sub
 
     Private Function RunCmd(ByVal StrCommand As String) As String
@@ -54,34 +80,22 @@ Public Class FormMain
         ButtonTest1.Text = CheckedListBoxSelectMods.SelectedItem
     End Sub
 
-    Private Sub ButtonMCBBS_Click(sender As Object, e As EventArgs) Handles ButtonMCBBS.Click
-        If CheckedListBoxSelectMods.SelectedIndex <> -1 Then
-            For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
-                If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = CheckedListBoxSelectMods.SelectedItem Then
-                    Process.Start("https://search.mcmod.cn/s?key=" & Replace(ModListWithFullInfo.moddisplayinfo(modid).name, "-", ""))
-                    Exit For
-                End If
-            Next
-        End If
-    End Sub
-
-    Private Sub ButtonCurseForge_Click(sender As Object, e As EventArgs) Handles ButtonCurseForge.Click
-        If CheckedListBoxSelectMods.SelectedIndex <> -1 Then
-            For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
-                If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = CheckedListBoxSelectMods.SelectedItem Then
-                    Process.Start("https://www.curseforge.com/minecraft/mc-mods/" & ModListWithFullInfo.moddisplayinfo(modid).name)
-                    Exit For
-                End If
-            Next
-        End If
-    End Sub
-
     Private Sub Buttontest1_Click(sender As Object, e As EventArgs) Handles ButtonTest1.Click
         FormInfoEdit.Show()
     End Sub
 
     Private Sub ButtonReflashModInfo_Click(sender As Object, e As EventArgs) Handles ButtonReflashModInfo.Click
         ReflashModInfo()
+        VScrollBarModList.Value = 0
+        If ModListWithFullInfo.modid.Count < 15 Then
+            VScrollBarModList.Visible = False
+            Select Case ModListWithFullInfo.modid.Count
+                Case Is = 0
+
+            End Select
+        Else
+            VScrollBarModList.Visible = True
+        End If
     End Sub
 
     Private Sub ButtonRemoveUselessDepend_Click(sender As Object, e As EventArgs) Handles ButtonRemoveUselessDepend.Click
@@ -132,14 +146,76 @@ Public Class FormMain
         Next
     End Sub 'the checked status will change after this Sub
 
+    Private Sub LabelModInfo_DoubleClick(sender As Object, e As EventArgs) Handles LabelModInfo.DoubleClick
+        LabelModInfo.Text = ""
+    End Sub
+
+    Private Sub LabelModInfo_TextChanged(sender As Object, e As EventArgs) Handles LabelModInfo.TextChanged
+        If LabelModInfo.Text = "" Then
+            LabelModInfo.Visible = False
+            LabelClickMCbaike.Visible = False
+            LabelClickCurseForge.Visible = False
+        Else
+            LabelModInfo.Visible = True
+            LabelClickMCbaike.Visible = True
+            LabelClickCurseForge.Visible = True
+        End If
+    End Sub
+
+    Private Sub LabelClickMCbaike_Click(sender As Object, e As EventArgs) Handles LabelClickMCbaike.Click
+        If CheckedListBoxSelectMods.SelectedIndex <> -1 Then
+            For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
+                If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = CheckedListBoxSelectMods.SelectedItem Then
+                    Process.Start("https://search.mcmod.cn/s?key=" & Replace(ModListWithFullInfo.moddisplayinfo(modid).name, "-", ""))
+                    Exit For
+                End If
+            Next
+        End If
+    End Sub
+
+    Private Sub LabelClickCurseForge_Click(sender As Object, e As EventArgs) Handles LabelClickCurseForge.Click
+        If CheckedListBoxSelectMods.SelectedIndex <> -1 Then
+            For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
+                If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = CheckedListBoxSelectMods.SelectedItem Then
+                    Process.Start("https://www.curseforge.com/minecraft/mc-mods/" & ModListWithFullInfo.moddisplayinfo(modid).name)
+                    Exit For
+                End If
+            Next
+        End If
+    End Sub
+
+    Private Sub VScrollBarModList_ValueChanged(sender As Object, e As EventArgs) Handles VScrollBarModList.ValueChanged
+        Dim FirstShowModRank As Byte
+        If ModListWithFullInfo.modid.Count < 15 Then
+            FirstShowModRank = 0
+        Else
+            FirstShowModRank = Int(VScrollBarModList.Value / (91 / (ModListWithFullInfo.modid.Count - 14)))
+        End If
+        Dim WorkingRank As Byte = FirstShowModRank
+        For i = 0 To GroupBoxModList.Controls.Count - 1
+            ButtonApplyAll.Text = FirstShowModRank
+            Dim ShowText As String
+            ShowText = Path.GetFileName(ModListWithFullInfo.moddisplayinfo(ModListWithFullInfo.modid(WorkingRank)).ModPath)
+            If ShowText.Length > 30 Then
+                ShowText = Mid(ShowText, 1, 30)
+            End If
+            GroupBoxModList.Controls(GroupBoxModList.Controls.Count - 1 - i).Text = ShowText '天知道为什么这玩意是反的，非得这么搞
+            WorkingRank += 1
+            If WorkingRank > ModListWithFullInfo.modid.Count - 1 Then Exit Sub
+        Next
+    End Sub
+
     Private Sub ButtonApplyAll_Click(sender As Object, e As EventArgs) Handles ButtonApplyAll.Click
-        Dim MsgBoxChoose ' As MsgBoxResult
+        Dim MsgBoxChoose As MsgBoxResult
         Dim ModTargetDirectory As String = Application.StartupPath & "\.minecraft\mods\"
         MsgBoxChoose = MsgBox(Prompt:="是否清空原有的mods文件夹", Buttons:=vbYesNoCancel, Title:="应用模组配置")
         If MsgBoxChoose = vbYes Then
-            For Each deleteFile In Directory.GetFiles(ModTargetDirectory, "*.*", SearchOption.TopDirectoryOnly)
-                File.Delete(deleteFile)
-            Next
+            Try 'solve empty directory
+                For Each deleteFile In Directory.GetFiles(ModTargetDirectory, "*.*", SearchOption.TopDirectoryOnly)
+                    File.Delete(deleteFile)
+                Next
+            Catch
+            End Try
         ElseIf MsgBoxChoose = vbNo Then
             MsgBox(Prompt:="请自行检查是否有与原有模组重复或冲突的模组", Buttons:=vbYes, Title:="应用模组配置")
         ElseIf MsgBoxChoose = vbCancel Then
@@ -162,5 +238,21 @@ Public Class FormMain
                 Loop
             End If
         Next
+    End Sub
+
+    Private Sub PanelMoveForm_MouseDown(sender As Object, e As MouseEventArgs) Handles PanelMoveForm.MouseDown
+        If e.Button = Windows.Forms.MouseButtons.Left Then
+            FormPositionOriginalX = e.X
+            FormPositionOriginalY = e.Y
+        End If
+    End Sub
+
+    Private Sub PanelMoveForm_MouseMove(sender As Object, e As MouseEventArgs) Handles PanelMoveForm.MouseMove
+        If e.Button = Windows.Forms.MouseButtons.Left Then
+            FormPositionNowX = e.X
+            FormPositionNowY = e.Y
+            Me.Left = Me.Location.X + (FormPositionNowX - FormPositionOriginalX)
+            Me.Top = Me.Location.Y + (FormPositionNowY - FormPositionOriginalY)
+        End If
     End Sub
 End Class

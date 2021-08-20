@@ -124,7 +124,7 @@ Module ModuleModjson
 
     Public Function ReflashNewAllModInfo(ProcessingModListWithFullInfo As ClassModListWithFullInfo) 'to extract mod info from itself
         Dim FilePath() As String
-        FilePath = ListFileNameInFloder(Application.StartupPath & "\MMH\not-loaded-mods\")
+        FilePath = ListFileNameInFloder(Application.StartupPath & "\MMH\not-loaded-mods\", {".jar"})
         Dim ModInfo(0 To UBound(FilePath), 0 To 6) As String
         ProcessingModListWithFullInfo.modid.Clear()
         ProcessingModListWithFullInfo.moddisplayinfo.Clear()

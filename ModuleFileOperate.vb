@@ -17,11 +17,14 @@
         fs.Close()
     End Sub
 
-    Public Function ListFileNameInFloder(FolderPath As String)
-        Dim FileNames = My.Computer.FileSystem.GetFiles(FolderPath, FileIO.SearchOption.SearchTopLevelOnly, "*.jar")
-        Dim FilePath(0 To FileNames.Count - 1) As String
-        For i = 0 To FileNames.Count - 1 'transform to array
-            FilePath(i) = FileNames(i)
+    Public Function ListFileNameInFloder(FolderPath As String, Extension() As String)
+        Dim FilePath() As String = {}
+        For Each i In Extension
+            Dim FileNames = My.Computer.FileSystem.GetFiles(FolderPath, FileIO.SearchOption.SearchTopLevelOnly, "*" & i)
+            For ii = 0 To FileNames.Count - 1 'transform to array
+                ReDim Preserve FilePath(0 To UBound(FilePath) + 1)
+                FilePath(UBound(FilePath)) = FileNames(ii)
+            Next
         Next
         Return FilePath
     End Function
