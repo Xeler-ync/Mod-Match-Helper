@@ -30,14 +30,15 @@ Partial Class FormMain
         Me.ButtonReflashModInfo = New System.Windows.Forms.Button()
         Me.ButtonRemoveUselessDepend = New System.Windows.Forms.Button()
         Me.ButtonApplyAll = New System.Windows.Forms.Button()
+        Me.PanelMoveForm = New System.Windows.Forms.Panel()
         Me.SuspendLayout()
         '
         'CheckedListBoxSelectMods
         '
         Me.CheckedListBoxSelectMods.ColumnWidth = 2
         Me.CheckedListBoxSelectMods.FormattingEnabled = True
-        Me.CheckedListBoxSelectMods.Location = New System.Drawing.Point(16, 15)
-        Me.CheckedListBoxSelectMods.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CheckedListBoxSelectMods.Location = New System.Drawing.Point(13, 66)
+        Me.CheckedListBoxSelectMods.Margin = New System.Windows.Forms.Padding(4)
         Me.CheckedListBoxSelectMods.Name = "CheckedListBoxSelectMods"
         Me.CheckedListBoxSelectMods.Size = New System.Drawing.Size(323, 404)
         Me.CheckedListBoxSelectMods.TabIndex = 0
@@ -45,17 +46,17 @@ Partial Class FormMain
         'LabelModInfo
         '
         Me.LabelModInfo.Font = New System.Drawing.Font("宋体", 12.0!)
-        Me.LabelModInfo.Location = New System.Drawing.Point(348, 15)
+        Me.LabelModInfo.Location = New System.Drawing.Point(345, 66)
         Me.LabelModInfo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelModInfo.Name = "LabelModInfo"
         Me.LabelModInfo.Size = New System.Drawing.Size(568, 405)
         Me.LabelModInfo.TabIndex = 2
-        Me.LabelModInfo.Text = "Label1"
+        Me.LabelModInfo.Text = "                     这里是mod信息"
         '
         'ButtonTest1
         '
-        Me.ButtonTest1.Location = New System.Drawing.Point(0, 1)
-        Me.ButtonTest1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ButtonTest1.Location = New System.Drawing.Point(-3, 52)
+        Me.ButtonTest1.Margin = New System.Windows.Forms.Padding(4)
         Me.ButtonTest1.Name = "ButtonTest1"
         Me.ButtonTest1.Size = New System.Drawing.Size(24, 24)
         Me.ButtonTest1.TabIndex = 3
@@ -65,8 +66,8 @@ Partial Class FormMain
         'ButtonMCBBS
         '
         Me.ButtonMCBBS.Font = New System.Drawing.Font("宋体", 25.0!)
-        Me.ButtonMCBBS.Location = New System.Drawing.Point(636, 428)
-        Me.ButtonMCBBS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ButtonMCBBS.Location = New System.Drawing.Point(633, 479)
+        Me.ButtonMCBBS.Margin = New System.Windows.Forms.Padding(4)
         Me.ButtonMCBBS.Name = "ButtonMCBBS"
         Me.ButtonMCBBS.Size = New System.Drawing.Size(280, 55)
         Me.ButtonMCBBS.TabIndex = 4
@@ -76,8 +77,8 @@ Partial Class FormMain
         'ButtonCurseForge
         '
         Me.ButtonCurseForge.Font = New System.Drawing.Font("宋体", 25.0!)
-        Me.ButtonCurseForge.Location = New System.Drawing.Point(348, 428)
-        Me.ButtonCurseForge.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ButtonCurseForge.Location = New System.Drawing.Point(345, 479)
+        Me.ButtonCurseForge.Margin = New System.Windows.Forms.Padding(4)
         Me.ButtonCurseForge.Name = "ButtonCurseForge"
         Me.ButtonCurseForge.Size = New System.Drawing.Size(280, 55)
         Me.ButtonCurseForge.TabIndex = 5
@@ -86,38 +87,47 @@ Partial Class FormMain
         '
         'ButtonReflashModInfo
         '
-        Me.ButtonReflashModInfo.Location = New System.Drawing.Point(16, 428)
-        Me.ButtonReflashModInfo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ButtonReflashModInfo.Location = New System.Drawing.Point(13, 481)
+        Me.ButtonReflashModInfo.Margin = New System.Windows.Forms.Padding(4)
         Me.ButtonReflashModInfo.Name = "ButtonReflashModInfo"
-        Me.ButtonReflashModInfo.Size = New System.Drawing.Size(159, 54)
+        Me.ButtonReflashModInfo.Size = New System.Drawing.Size(113, 54)
         Me.ButtonReflashModInfo.TabIndex = 6
         Me.ButtonReflashModInfo.Text = "刷新Mod信息"
         Me.ButtonReflashModInfo.UseVisualStyleBackColor = True
         '
         'ButtonRemoveUselessDepend
         '
-        Me.ButtonRemoveUselessDepend.Location = New System.Drawing.Point(183, 428)
-        Me.ButtonRemoveUselessDepend.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ButtonRemoveUselessDepend.Location = New System.Drawing.Point(134, 479)
+        Me.ButtonRemoveUselessDepend.Margin = New System.Windows.Forms.Padding(4)
         Me.ButtonRemoveUselessDepend.Name = "ButtonRemoveUselessDepend"
-        Me.ButtonRemoveUselessDepend.Size = New System.Drawing.Size(157, 55)
+        Me.ButtonRemoveUselessDepend.Size = New System.Drawing.Size(110, 55)
         Me.ButtonRemoveUselessDepend.TabIndex = 7
         Me.ButtonRemoveUselessDepend.Text = "移除无用前置"
         Me.ButtonRemoveUselessDepend.UseVisualStyleBackColor = True
         '
         'ButtonApplyAll
         '
-        Me.ButtonApplyAll.Location = New System.Drawing.Point(183, 247)
+        Me.ButtonApplyAll.Location = New System.Drawing.Point(251, 479)
         Me.ButtonApplyAll.Name = "ButtonApplyAll"
-        Me.ButtonApplyAll.Size = New System.Drawing.Size(75, 23)
+        Me.ButtonApplyAll.Size = New System.Drawing.Size(85, 55)
         Me.ButtonApplyAll.TabIndex = 8
         Me.ButtonApplyAll.Text = "应用"
         Me.ButtonApplyAll.UseVisualStyleBackColor = True
+        '
+        'PanelMoveForm
+        '
+        Me.PanelMoveForm.BackColor = System.Drawing.Color.Navy
+        Me.PanelMoveForm.Location = New System.Drawing.Point(-3, -2)
+        Me.PanelMoveForm.Name = "PanelMoveForm"
+        Me.PanelMoveForm.Size = New System.Drawing.Size(930, 47)
+        Me.PanelMoveForm.TabIndex = 10
         '
         'FormMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(925, 498)
+        Me.ClientSize = New System.Drawing.Size(925, 546)
+        Me.Controls.Add(Me.PanelMoveForm)
         Me.Controls.Add(Me.ButtonApplyAll)
         Me.Controls.Add(Me.ButtonRemoveUselessDepend)
         Me.Controls.Add(Me.ButtonReflashModInfo)
@@ -126,9 +136,12 @@ Partial Class FormMain
         Me.Controls.Add(Me.ButtonTest1)
         Me.Controls.Add(Me.CheckedListBoxSelectMods)
         Me.Controls.Add(Me.LabelModInfo)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Margin = New System.Windows.Forms.Padding(4)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "FormMain"
-        Me.Text = "Form1"
+        Me.Text = "MMH"
         Me.ResumeLayout(False)
 
     End Sub
@@ -141,4 +154,5 @@ Partial Class FormMain
     Friend WithEvents ButtonReflashModInfo As Button
     Friend WithEvents ButtonRemoveUselessDepend As Button
     Friend WithEvents ButtonApplyAll As Button
+    Friend WithEvents PanelMoveForm As Panel
 End Class
