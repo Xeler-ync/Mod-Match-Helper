@@ -131,4 +131,36 @@ Public Class FormMain
             End If
         Next
     End Sub 'the checked status will change after this Sub
+
+    Private Sub ButtonApplyAll_Click(sender As Object, e As EventArgs) Handles ButtonApplyAll.Click
+        Dim MsgBoxChoose ' As MsgBoxResult
+        Dim ModTargetDirectory As String = Application.StartupPath & "\.minecraft\mods\"
+        MsgBoxChoose = MsgBox(Prompt:="是否清空原有的mods文件夹", Buttons:=vbYesNoCancel, Title:="应用模组配置")
+        If MsgBoxChoose = vbYes Then
+            For Each deleteFile In Directory.GetFiles(ModTargetDirectory, "*.*", SearchOption.TopDirectoryOnly)
+                File.Delete(deleteFile)
+            Next
+        ElseIf MsgBoxChoose = vbNo Then
+            MsgBox(Prompt:="请自行检查是否有与原有模组重复或冲突的模组", Buttons:=vbYes, Title:="应用模组配置")
+        ElseIf MsgBoxChoose = vbCancel Then
+            Exit Sub
+        End If
+        For Each modid In ModListWithFullInfo.modid
+            If ModListWithFullInfo.moddisplayinfo(modid).Choosed = True Then
+                Dim SuffixIndex As Byte = 0
+                Dim SuffixIndexStr As String = ""
+                Do '检查重复文件名，如果有则加上序号
+                    Try '组合文件路径 
+                        File.Copy(ModListWithFullInfo.moddisplayinfo(modid).ModPath, ModTargetDirectory & System.IO.Path.GetFileNameWithoutExtension(ModListWithFullInfo.moddisplayinfo(modid).ModPath) & SuffixIndexStr & System.IO.Path.GetExtension(ModListWithFullInfo.moddisplayinfo(modid).ModPath), False)
+                        SuffixIndex = 0 '如果正常则会进行到这，并清空缓存
+                        SuffixIndexStr = ""
+                        Exit Do '进行下一个文件
+                    Catch a As System.IO.IOException 'Catch重复的错误
+                        SuffixIndex += 1 '如果添加序号依旧有重复则+1
+                        SuffixIndexStr = " (" & SuffixIndex & ")"
+                    End Try
+                Loop
+            End If
+        Next
+    End Sub
 End Class
