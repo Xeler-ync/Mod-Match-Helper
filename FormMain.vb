@@ -4,6 +4,8 @@ Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
 Public Class FormMain
+    Dim LastFirstRank As Byte
+    Dim LastSelectModID As String
     Dim ChoosedDepend As New List(Of String)
     Dim DependModifing As Boolean = False
     Dim FormPositionOriginalX, FormPositionNowX, FormPositionOriginalY, FormPositionNowY As Integer
@@ -11,29 +13,48 @@ Public Class FormMain
     Private Sub FormMain_Load(sender As Object, e As EventArgs) Handles Me.Load
         Me.Visible = False
         ReflashModInfo()
-        Dim PicturePathList() As String = ListFileNameInFloder(Application.StartupPath & "\MMH\background", {".jpg", ".png"})
+        Dim PicturePathList() As String = ListFileNameInFloder(Application.StartupPath & "\MMH\background\", {".jpg", ".png"})
         Randomize()
-        Me.BackgroundImage = Image.FromFile(PicturePathList(Int(Rnd(UBound(PicturePathList)))))
+        Dim TargetPicturePath As String
+        TargetPicturePath = PicturePathList(Int(Rnd() * 114514 Mod 2))
+        Me.BackgroundImage = Image.FromFile(TargetPicturePath)
         LabelModInfo.BackColor = Color.FromArgb(127, 255, 255, 255)
         LabelClickMCbaike.BackColor = Color.FromArgb(127, 255, 255, 255)
         LabelClickCurseForge.BackColor = Color.FromArgb(127, 255, 255, 255)
         PanelMoveForm.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod0.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod1.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod2.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod3.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod4.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod5.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod6.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod7.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod8.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod9.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod10.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod11.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod12.BackColor = Color.FromArgb(127, 255, 255, 255)
-        CheckBoxMod13.BackColor = Color.FromArgb(127, 255, 255, 255)
-        GroupBoxModList.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod0.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod1.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod2.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod3.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod4.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod5.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod6.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod7.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod8.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod9.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod10.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod11.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod12.BackColor = Color.FromArgb(0, 255, 255, 255)
+        CheckBoxMod13.BackColor = Color.FromArgb(0, 255, 255, 255)
+        GroupBoxModList.BackColor = Color.FromArgb(127, 255, 255, 255)
+        GroupBoxCheckBoxModList.BackColor = Color.FromArgb(127, 255, 255, 255)
+        GroupBoxAdvancedMode.BackColor = Color.FromArgb(0, 255, 255, 255)
+        GroupBoxEasyMode.BackColor = Color.FromArgb(0, 255, 255, 255)
         LabelMMH.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod0.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod1.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod2.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod3.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod4.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod5.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod6.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod7.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod8.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod9.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod10.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod11.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod12.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelMod13.BackColor = Color.FromArgb(0, 255, 255, 255)
         Me.Visible = True
     End Sub
 
@@ -57,48 +78,52 @@ Public Class FormMain
     Private Sub ReflashModInfo()
         ModListWithFullInfo = ReflashNewAllModInfo(ModListWithFullInfo)
         ModListWithFullInfo = ReadModIntroductionjson(ModListWithFullInfo)
-        For i = 0 To ModListWithFullInfo.modid.Count - 1
-            CheckedListBoxSelectMods.Items.Add(System.IO.Path.GetFileName(ModListWithFullInfo.moddisplayinfo(ModListWithFullInfo.modid(i)).ModPath))
-        Next
+        VScrollBarModList.Value = 0
+        If ModListWithFullInfo.modid.Count < 15 Then
+            VScrollBarModList.Visible = False
+        Else
+            VScrollBarModList.Visible = True
+        End If
+        ReflashDisplayContentFromModListWithFullInfo(0)
     End Sub
 
-    Private Sub CheckedListBoxSelectMods_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CheckedListBoxSelectMods.SelectedIndexChanged
-        LabelModInfo.Text = ""
-        For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
-            If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = CheckedListBoxSelectMods.SelectedItem Then
-                LabelModInfo.Text += "名字 : " & ModListWithFullInfo.moddisplayinfo(modid).displayname & vbCrLf
-                LabelModInfo.Text += "介绍 : " & ModListWithFullInfo.moddisplayinfo(modid).displaydescription & vbCrLf
-                LabelModInfo.Text += "依赖 : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).dependsArray) & vbCrLf & vbCrLf
-                LabelModInfo.Text += "id : " & ModListWithFullInfo.moddisplayinfo(modid).id & vbCrLf
-                LabelModInfo.Text += "version : " & ModListWithFullInfo.moddisplayinfo(modid).version & vbCrLf
-                LabelModInfo.Text += "name : " & ModListWithFullInfo.moddisplayinfo(modid).name & vbCrLf
-                LabelModInfo.Text += "author(s) : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).authersArray) & vbCrLf
-                LabelModInfo.Text += "description : " & ModListWithFullInfo.moddisplayinfo(modid).description
-                ModListWithFullInfo.moddisplayinfo(modid).Choosed = CheckedListBoxSelectMods.GetItemChecked(CheckedListBoxSelectMods.SelectedIndex)
-            End If
+    Private Sub ReflashDisplayContentFromModListWithFullInfo(FirstShowModRank As Byte)
+        Dim WorkingRank As Byte = FirstShowModRank
+        For i = 0 To GroupBoxModList.Controls.Count - 1
+            Dim ShowText As String
+            ShowText = Path.GetFileName(ModListWithFullInfo.moddisplayinfo(ModListWithFullInfo.modid(WorkingRank)).ModPath)
+            GroupBoxModList.Controls(GroupBoxModList.Controls.Count - 1 - i).Text = ShowText '天知道为什么这玩意是反的，非得这么搞
+            WorkingRank += 1
+            If WorkingRank > ModListWithFullInfo.modid.Count - 1 Then Exit Sub
         Next
-        ButtonTest1.Text = CheckedListBoxSelectMods.SelectedItem
+        CheckBoxMod0.Text = LabelMod0.Text
+        CheckBoxMod1.Text = LabelMod1.Text
+        CheckBoxMod2.Text = LabelMod2.Text
+        CheckBoxMod3.Text = LabelMod3.Text
+        CheckBoxMod4.Text = LabelMod4.Text
+        CheckBoxMod5.Text = LabelMod5.Text
+        CheckBoxMod6.Text = LabelMod6.Text
+        CheckBoxMod7.Text = LabelMod7.Text
+        CheckBoxMod8.Text = LabelMod8.Text
+        CheckBoxMod9.Text = LabelMod9.Text
+        CheckBoxMod10.Text = LabelMod10.Text
+        CheckBoxMod11.Text = LabelMod1.Text
+        CheckBoxMod12.Text = LabelMod12.Text
+        CheckBoxMod13.Text = LabelMod13.Text
+        For Each i In GroupBoxCheckBoxModList.Controls
+            i.checked = ModListWithFullInfo.moddisplayinfo(FromModFileNameFineModIDInModListWithFullInfo(i.Text)).Choosed
+        Next
     End Sub
 
     Private Sub Buttontest1_Click(sender As Object, e As EventArgs) Handles ButtonTest1.Click
         FormInfoEdit.Show()
     End Sub
 
-    Private Sub ButtonReflashModInfo_Click(sender As Object, e As EventArgs) Handles ButtonReflashModInfo.Click
+    Private Sub ButtonReflashModInfo_Click(sender As Object, e As EventArgs)
         ReflashModInfo()
-        VScrollBarModList.Value = 0
-        If ModListWithFullInfo.modid.Count < 15 Then
-            VScrollBarModList.Visible = False
-            Select Case ModListWithFullInfo.modid.Count
-                Case Is = 0
-
-            End Select
-        Else
-            VScrollBarModList.Visible = True
-        End If
     End Sub
 
-    Private Sub ButtonRemoveUselessDepend_Click(sender As Object, e As EventArgs) Handles ButtonRemoveUselessDepend.Click
+    Private Sub ButtonRemoveUselessDepend_Click(sender As Object, e As EventArgs)
         Dim DependToRemove As New List(Of String)
         For Each SingleChoosedDepend In ChoosedDepend
             Dim Useful As Boolean = False
@@ -115,36 +140,10 @@ Public Class FormMain
             ChoosedDepend.Remove(modid)
             ModListWithFullInfo.moddisplayinfo(modid).Choosed = False
             DependModifing = True
-            CheckedListBoxSelectMods.SetItemChecked(CheckedListBoxSelectMods.FindString(Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath)), False)
+            ReflashDisplayContentFromModListWithFullInfo(LastFirstRank)
             DependModifing = False
         Next
     End Sub
-
-    Private Sub CheckedListBoxSelectMods_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles CheckedListBoxSelectMods.ItemCheck 'the checked status will change after this sub
-        If DependModifing = True Then Exit Sub 'Add depends will call this sub, cause Stack Overflow
-        For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
-            If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = CheckedListBoxSelectMods.SelectedItem Then
-                ModListWithFullInfo.moddisplayinfo(modid).Choosed = CheckedListBoxSelectMods.GetItemChecked(CheckedListBoxSelectMods.SelectedIndex)
-                If CheckedListBoxSelectMods.GetItemChecked(CheckedListBoxSelectMods.SelectedIndex) = False Then 'the checked status will change after this sub
-                    ModListWithFullInfo.moddisplayinfo(modid).Choosed = True
-                    If ModListWithFullInfo.moddisplayinfo(modid).dependsArray.Count <> 0 Then
-                        DependModifing = True
-                        For Each dependsmodid In ModListWithFullInfo.moddisplayinfo(modid).dependsArray
-                            ModListWithFullInfo.moddisplayinfo(dependsmodid).Choosed = True
-                            CheckedListBoxSelectMods.SetItemChecked(CheckedListBoxSelectMods.FindString(Path.GetFileName(ModListWithFullInfo.moddisplayinfo(dependsmodid).ModPath)), True)
-                            If ChoosedDepend.Count = 0 Or Not ChoosedDepend.Contains(dependsmodid) Then
-                                ChoosedDepend.Add(dependsmodid) 'prevent duplicate add
-                            End If
-                        Next
-                        DependModifing = False
-                    End If
-                    Exit For
-                ElseIf CheckedListBoxSelectMods.GetItemChecked(CheckedListBoxSelectMods.SelectedIndex) = True Then 'the checked status will change after this sub
-                    ModListWithFullInfo.moddisplayinfo(modid).Choosed = False
-                End If
-            End If
-        Next
-    End Sub 'the checked status will change after this Sub
 
     Private Sub LabelModInfo_DoubleClick(sender As Object, e As EventArgs) Handles LabelModInfo.DoubleClick
         LabelModInfo.Text = ""
@@ -163,24 +162,14 @@ Public Class FormMain
     End Sub
 
     Private Sub LabelClickMCbaike_Click(sender As Object, e As EventArgs) Handles LabelClickMCbaike.Click
-        If CheckedListBoxSelectMods.SelectedIndex <> -1 Then
-            For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
-                If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = CheckedListBoxSelectMods.SelectedItem Then
-                    Process.Start("https://search.mcmod.cn/s?key=" & Replace(ModListWithFullInfo.moddisplayinfo(modid).name, "-", ""))
-                    Exit For
-                End If
-            Next
+        If LastSelectModID <> "" Then
+            Process.Start("https://search.mcmod.cn/s?key=" & Replace(LastSelectModID, "-", ""))
         End If
     End Sub
 
     Private Sub LabelClickCurseForge_Click(sender As Object, e As EventArgs) Handles LabelClickCurseForge.Click
-        If CheckedListBoxSelectMods.SelectedIndex <> -1 Then
-            For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
-                If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = CheckedListBoxSelectMods.SelectedItem Then
-                    Process.Start("https://www.curseforge.com/minecraft/mc-mods/" & ModListWithFullInfo.moddisplayinfo(modid).name)
-                    Exit For
-                End If
-            Next
+        If LastSelectModID <> "" Then
+            Process.Start("https://www.curseforge.com/minecraft/mc-mods/" & LastSelectModID)
         End If
     End Sub
 
@@ -191,18 +180,49 @@ Public Class FormMain
         Else
             FirstShowModRank = Int(VScrollBarModList.Value / (91 / (ModListWithFullInfo.modid.Count - 14)))
         End If
-        Dim WorkingRank As Byte = FirstShowModRank
-        For i = 0 To GroupBoxModList.Controls.Count - 1
-            ButtonApplyAll.Text = FirstShowModRank
-            Dim ShowText As String
-            ShowText = Path.GetFileName(ModListWithFullInfo.moddisplayinfo(ModListWithFullInfo.modid(WorkingRank)).ModPath)
-            If ShowText.Length > 30 Then
-                ShowText = Mid(ShowText, 1, 30)
-            End If
-            GroupBoxModList.Controls(GroupBoxModList.Controls.Count - 1 - i).Text = ShowText '天知道为什么这玩意是反的，非得这么搞
-            WorkingRank += 1
-            If WorkingRank > ModListWithFullInfo.modid.Count - 1 Then Exit Sub
-        Next
+        If FirstShowModRank <> LastFirstRank Then
+            ReflashDisplayContentFromModListWithFullInfo(FirstShowModRank)
+            LastFirstRank = FirstShowModRank
+        End If
+    End Sub
+
+    Private Sub CheckBoxModCheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxMod0.CheckedChanged, CheckBoxMod1.CheckedChanged, CheckBoxMod2.CheckedChanged, CheckBoxMod3.CheckedChanged, CheckBoxMod4.CheckedChanged, CheckBoxMod5.CheckedChanged, CheckBoxMod6.CheckedChanged, CheckBoxMod7.CheckedChanged, CheckBoxMod8.CheckedChanged, CheckBoxMod9.CheckedChanged, CheckBoxMod10.CheckedChanged, CheckBoxMod11.CheckedChanged, CheckBoxMod12.CheckedChanged, CheckBoxMod13.CheckedChanged
+        ModifyModChoose(FromModFileNameFineModIDInModListWithFullInfo(sender.Text), sender.checked)
+    End Sub
+
+    Private Sub LabelModDoubleClick(sender As Object, e As EventArgs) Handles LabelMod0.DoubleClick, LabelMod1.DoubleClick, LabelMod2.DoubleClick, LabelMod3.DoubleClick, LabelMod4.DoubleClick, LabelMod5.DoubleClick, LabelMod6.DoubleClick, LabelMod7.DoubleClick, LabelMod8.DoubleClick, LabelMod9.DoubleClick, LabelMod10.DoubleClick, LabelMod11.DoubleClick, LabelMod12.DoubleClick, LabelMod13.DoubleClick
+        ModifyModChoose(FromModFileNameFineModIDInModListWithFullInfo(sender.Text), Not ModListWithFullInfo.moddisplayinfo(FromModFileNameFineModIDInModListWithFullInfo(sender.Text)).Choosed)
+    End Sub
+
+    Private Sub ModifyModChoose(modid As String, Choose As Boolean)
+        If DependModifing = True Then Exit Sub 'Add depends will call this sub, cause Stack Overflow
+        ModListWithFullInfo.moddisplayinfo(modid).Choosed = Choose
+        If Choose = True And ModListWithFullInfo.moddisplayinfo(modid).dependsArray.Count <> 0 Then 'check depends
+            DependModifing = True
+            For Each dependsmodid In ModListWithFullInfo.moddisplayinfo(modid).dependsArray
+                ModListWithFullInfo.moddisplayinfo(dependsmodid).Choosed = True
+                If ChoosedDepend.Count = 0 Or Not ChoosedDepend.Contains(dependsmodid) Then
+                    ChoosedDepend.Add(dependsmodid) 'prevent duplicate add
+                End If
+            Next
+            DependModifing = False
+        End If
+    End Sub
+
+    Private Sub LabelModClick(sender As Object, e As EventArgs) Handles LabelMod0.Click, LabelMod1.Click, LabelMod2.Click, LabelMod3.Click, LabelMod4.Click, LabelMod5.Click, LabelMod6.Click, LabelMod7.Click, LabelMod8.Click, LabelMod9.Click, LabelMod10.Click, LabelMod11.Click, LabelMod12.Click, LabelMod13.Click
+        If sender.text = "" Then Exit Sub
+        Dim modid As String
+        modid = FromModFileNameFineModIDInModListWithFullInfo(sender.Text)
+        LabelModInfo.Text = ""
+        LabelModInfo.Text += "名字 : " & ModListWithFullInfo.moddisplayinfo(modid).displayname & vbCrLf
+        LabelModInfo.Text += "介绍 : " & ModListWithFullInfo.moddisplayinfo(modid).displaydescription & vbCrLf
+        LabelModInfo.Text += "依赖 : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).dependsArray) & vbCrLf & vbCrLf
+        LabelModInfo.Text += "id : " & ModListWithFullInfo.moddisplayinfo(modid).id & vbCrLf
+        LabelModInfo.Text += "version : " & ModListWithFullInfo.moddisplayinfo(modid).version & vbCrLf
+        LabelModInfo.Text += "name : " & ModListWithFullInfo.moddisplayinfo(modid).name & vbCrLf
+        LabelModInfo.Text += "author(s) : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).authersArray) & vbCrLf
+        LabelModInfo.Text += "description : " & ModListWithFullInfo.moddisplayinfo(modid).description
+        LastSelectModID = modid
     End Sub
 
     Private Sub ButtonApplyAll_Click(sender As Object, e As EventArgs) Handles ButtonApplyAll.Click

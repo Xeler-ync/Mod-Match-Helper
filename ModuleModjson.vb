@@ -94,7 +94,7 @@ Module ModuleModjson
             Next
             Dim NewInfo As String
             NewInfo = Mid(jsonContent.Split(WrapType)(CheckLineNum), FirstQuotationMarks + 1, SecondQuotationMarks - FirstQuotationMarks - 1)
-            If (Not NewInfo.Contains("fabric")) And (Not NewInfo.Contains("minecraft")) Then 'do not add fabricload fabric minrcraft
+            If (Not NewInfo.Contains("fabric")) And (Not NewInfo.Contains("minecraft") And (Not NewInfo.Contains("java"))) Then 'do not add fabricload fabric minrcraft
                 For Each i In depends
                     If i = NewInfo Then
                         NewInfo = ""
@@ -114,12 +114,6 @@ Module ModuleModjson
         jsonPath = ExtractFabricModjson(ModPath)
         ProcessingModFullInfo = ExtractModInfoFromjson(jsonPath, ProcessingModFullInfo)
         Return ProcessingModFullInfo
-    End Function
-
-    Public Function ReflashModListWithFullInfo(ProcessingModListWithFullInfo As ClassModListWithFullInfo)
-        ProcessingModListWithFullInfo = ReflashNewAllModInfo(ProcessingModListWithFullInfo)
-        'ReadModIntroductionjson =
-        Return ProcessingModListWithFullInfo
     End Function
 
     Public Function ReflashNewAllModInfo(ProcessingModListWithFullInfo As ClassModListWithFullInfo) 'to extract mod info from itself
@@ -155,50 +149,25 @@ Module ModuleModjson
         Return ProcessingModListWithFullInfo
     End Function
 
-    Public Function LoadClassModInfoFileFromjson(ProcessingModListWithFullInfo As ClassModListWithFullInfo)
-        Dim jsonNonFormatedContent(,) As String
-        ProcessingModListWithFullInfo = ReadModIntroductionjson(ProcessingModListWithFullInfo) 'get json content
-        Dim jsonFormatedContent As New ClassModInfoFile
-        Dim jsonContent As String
-        jsonContent = ReadFile(Application.StartupPath & "\MMH\mod.introduction.json") 'get modid content
-        Dim jsonResults As JObject
-        Try
-            jsonResults = JObject.Parse(jsonContent)
-        Catch 'if empty
-            jsonResults = JObject.Parse("{""modid"" : [],""moddisplayinfo"" : {}}")
-        End Try
-        Dim modid As JToken = jsonResults("modid")
-        'jsonContent = Nothing
-        'jsonResults = Nothing
-        For i = 0 To UBound(jsonNonFormatedContent) 'format json content
-            Dim SingleModDisplayInfo As New ClassSingleModDisplayInfo With {
-            .displayname = jsonNonFormatedContent(i, 1),
-            .displaydescription = jsonNonFormatedContent(i, 2)
-            }
-            If CType(SingleModDisplayInfo.displayname, String) = CType(SingleModDisplayInfo.displaydescription, String) Then 'this array may has a item with Nothing
-            Else
-                jsonFormatedContent.moddisplayinfo.Add(modid(i), SingleModDisplayInfo)
+    Public Function FromModFileNameFineModIDInModListWithFullInfo(ModFileName As String)
+        For Each modid In ModListWithFullInfo.modid 'find which modid can match the SelectedIndex
+            If Path.GetFileName(ModListWithFullInfo.moddisplayinfo(modid).ModPath) = ModFileName Then
+                Return modid
             End If
         Next
-        Return jsonFormatedContent
+        Return ""
     End Function
 
-    Public Function ReadModIDFromIntroductionjson()
+    Public Function ReadEasyModeSetting()
+        Dim jsonPath() As String = ListFileNameInFloder("\MMH\predefined-select\", {".json"})
         Dim jsonContent As String
-        jsonContent = ReadFile(Application.StartupPath & "\MMH\mod.introduction.json")
+        jsonContent = ReadFile(Application.StartupPath & "\MMH\mod.easymode.json")
         Dim jsonResults As JObject
         Try
             jsonResults = JObject.Parse(jsonContent)
         Catch 'if empty
-            jsonResults = JObject.Parse("{""modid"" : [],""moddisplayinfo"" : {}}")
+            jsonResults = JObject.Parse("{""modid"" : [],""settingdescription"" : """"}")
         End Try
-        Dim modid As JToken = jsonResults("modid")
-        Dim ModIDList(0 To jsonResults("modid").Count) As String
-        Dim WorkCountTime As Byte
-        For Each SingleModID In modid
-            ModIDList(WorkCountTime) = SingleModID
-            WorkCountTime += 1
-        Next
-        Return ModIDList
+        Return 0
     End Function
 End Module

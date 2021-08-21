@@ -83,10 +83,12 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassAllPredefinedSelect.vb" />
     <Compile Include="ClassModFullInfo.vb" />
     <Compile Include="ClassModListWithFullInfo.vb" />
     <Compile Include="ClassSingleModDisplayInfo.vb" />
     <Compile Include="ClassModInfoFile.vb" />
+    <Compile Include="ClassSinglePredefinedSelect.vb" />
     <Compile Include="FormInfoEdit.Designer.vb">
       <DependentUpon>FormInfoEdit.vb</DependentUpon>
     </Compile>
