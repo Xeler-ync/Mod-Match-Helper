@@ -1,10 +1,10 @@
 ﻿Imports System.IO
 Imports System.IO.Compression
-Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
 Module ModuleModjson
     Public ModListWithFullInfo As New ClassModListWithFullInfo
+    Public AllPredefinedSelect As New ClassAllPredefinedSelect
     Public Function ExtractFabricModjson(ByVal ModPath As String) 'to extract mod info from itself
         ' Almost copied from MS official document
         Dim ExtractPath As String
@@ -48,10 +48,9 @@ Module ModuleModjson
         ProcessingModFullInfo.name = jsonResults("name")
         ProcessingModFullInfo.description = jsonResults("description")
         Dim jsonArray As JArray = jsonResults("authors") 'change the array of authors into JArry
-        'Dim authors As New List(Of String) 'create a new list to save the contents
-        If jsonContent.Contains("""authors"": [") Then 'checl if there is authors info in json
+        If jsonContent.Contains("""authors"": [") Then 'check if there is authors info in json
+            ReDim Preserve ProcessingModFullInfo.authersArray(0 To jsonArray.Count - 1)
             For Each i As JToken In jsonArray
-                ReDim Preserve ProcessingModFullInfo.authersArray(0 To jsonArray.Count - 1)
                 ProcessingModFullInfo.authersArray(UBound(ProcessingModFullInfo.authersArray)) = i.ToString
             Next
         Else
@@ -165,16 +164,29 @@ Module ModuleModjson
         Return ""
     End Function
 
-    Public Function ReadEasyModeSetting()
-        Dim jsonPath() As String = ListFileNameInFloder("\MMH\predefined-select\", {".json"})
+    Public Function ReadAllEasyModeSetting(ProcessingAllPredefinedSelect As ClassAllPredefinedSelect)
         Dim jsonContent As String
-        jsonContent = ReadFile(Application.StartupPath & "\MMH\mod.easymode.json")
+        jsonContent = ReadFile(Application.StartupPath & "\MMH\predefined.select.json")
         Dim jsonResults As JObject
         Try
             jsonResults = JObject.Parse(jsonContent)
         Catch 'if empty
-            jsonResults = JObject.Parse("{""modid"" : [],""settingdescription"" : """"}")
+            jsonResults = JObject.Parse("{""settingsid"" : [],""settingscontent"" : {}}")
         End Try
-        Return 0
+        Dim settingsid As JToken = jsonResults("settingsid")
+        For Each SingleSettingsID As String In settingsid
+            ProcessingAllPredefinedSelect.settingsid.Add(SingleSettingsID)
+            Dim SinglePredefinedSelect As ClassSinglePredefinedSelect
+#Disable Warning BC42104 ' 在为变量赋值之前，变量已被使用
+            SinglePredefinedSelect.settingsdescription = jsonResults("settingscontent")(SingleSettingsID)("settingsdescription")
+            SinglePredefinedSelect.settingsname = jsonResults("settingname")(SingleSettingsID)("settingsname")
+            For Each modid In jsonResults("settingscontent")(SingleSettingsID)("modidlist")
+                ReDim Preserve SinglePredefinedSelect.modidlist(0 To UBound(SinglePredefinedSelect.modidlist) + 1)
+                SinglePredefinedSelect.modidlist(UBound(SinglePredefinedSelect.modidlist)) = modid.ToString
+            Next
+#Enable Warning BC42104 ' 在为变量赋值之前，变量已被使用
+            ProcessingAllPredefinedSelect.settingscontent.Add(SingleSettingsID, SinglePredefinedSelect)
+        Next
+        Return ProcessingAllPredefinedSelect
     End Function
 End Module

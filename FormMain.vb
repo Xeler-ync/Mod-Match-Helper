@@ -6,18 +6,20 @@ Imports Newtonsoft.Json.Linq
 Public Class FormMain
     Dim LastFirstRank As Byte
     Dim LastSelectModID As String
-    Dim ChoosedDepend As New List(Of String)
+    ReadOnly ChoosedDepend As New List(Of String)
     Dim DependModifing As Boolean = False
     Dim FormPositionOriginalX, FormPositionNowX, FormPositionOriginalY, FormPositionNowY As Integer
 
     Private Sub FormMain_Load(sender As Object, e As EventArgs) Handles Me.Load
         Me.Visible = False
         ReflashModInfo()
+        AllPredefinedSelect = ReadAllEasyModeSetting(AllPredefinedSelect)
         Dim PicturePathList() As String = ListFileNameInFloder(Application.StartupPath & "\MMH\background\", {".jpg", ".png"})
         Randomize()
         Dim TargetPicturePath As String
         TargetPicturePath = PicturePathList(Int(Rnd() * 114514 Mod 2))
         Me.BackgroundImage = Image.FromFile(TargetPicturePath)
+        GroupBoxAdvancedMode.BackColor = Color.FromArgb(0, 255, 255, 255) ''
         LabelModInfo.BackColor = Color.FromArgb(127, 255, 255, 255)
         LabelClickMCbaike.BackColor = Color.FromArgb(127, 255, 255, 255)
         LabelClickCurseForge.BackColor = Color.FromArgb(127, 255, 255, 255)
@@ -38,8 +40,6 @@ Public Class FormMain
         CheckBoxMod13.BackColor = Color.FromArgb(0, 255, 255, 255)
         GroupBoxModList.BackColor = Color.FromArgb(127, 255, 255, 255)
         GroupBoxCheckBoxModList.BackColor = Color.FromArgb(127, 255, 255, 255)
-        GroupBoxAdvancedMode.BackColor = Color.FromArgb(0, 255, 255, 255)
-        GroupBoxEasyMode.BackColor = Color.FromArgb(0, 255, 255, 255)
         LabelMMH.BackColor = Color.FromArgb(0, 255, 255, 255)
         LabelMod0.BackColor = Color.FromArgb(0, 255, 255, 255)
         LabelMod1.BackColor = Color.FromArgb(0, 255, 255, 255)
@@ -55,6 +55,11 @@ Public Class FormMain
         LabelMod11.BackColor = Color.FromArgb(0, 255, 255, 255)
         LabelMod12.BackColor = Color.FromArgb(0, 255, 255, 255)
         LabelMod13.BackColor = Color.FromArgb(0, 255, 255, 255)
+        GroupBoxEasyMode.BackColor = Color.FromArgb(127, 255, 255, 255) ''
+        LabelSelectedSettingsDescription.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelSelectedSettingsName.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelClickNextSettings.BackColor = Color.FromArgb(0, 255, 255, 255)
+        LabelClickPreviousSettings.BackColor = Color.FromArgb(0, 255, 255, 255)
         Me.Visible = True
     End Sub
 
@@ -200,6 +205,10 @@ Public Class FormMain
         LabelModInfo.Text += "author(s) : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).authersArray) & vbCrLf
         LabelModInfo.Text += "description : " & ModListWithFullInfo.moddisplayinfo(modid).description
         LastSelectModID = modid
+    End Sub
+
+    Public Sub ReflashEasyModeSetting()
+        ReadAllEasyModeSetting(AllPredefinedSelect)
     End Sub
 
     Private Sub CheckBoxModCheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxMod0.CheckedChanged, CheckBoxMod1.CheckedChanged, CheckBoxMod2.CheckedChanged, CheckBoxMod3.CheckedChanged, CheckBoxMod4.CheckedChanged, CheckBoxMod5.CheckedChanged, CheckBoxMod6.CheckedChanged, CheckBoxMod7.CheckedChanged, CheckBoxMod8.CheckedChanged, CheckBoxMod9.CheckedChanged, CheckBoxMod10.CheckedChanged, CheckBoxMod11.CheckedChanged, CheckBoxMod12.CheckedChanged, CheckBoxMod13.CheckedChanged

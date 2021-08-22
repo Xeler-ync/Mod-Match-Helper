@@ -25,7 +25,6 @@ Partial Class FormMain
         Me.PanelMoveForm = New System.Windows.Forms.Panel()
         Me.LabelMMH = New System.Windows.Forms.Label()
         Me.GroupBoxAdvancedMode = New System.Windows.Forms.GroupBox()
-        Me.GroupBoxEasyMode = New System.Windows.Forms.GroupBox()
         Me.GroupBoxCheckBoxModList = New System.Windows.Forms.GroupBox()
         Me.CheckBoxMod13 = New System.Windows.Forms.CheckBox()
         Me.CheckBoxMod0 = New System.Windows.Forms.CheckBox()
@@ -64,10 +63,16 @@ Partial Class FormMain
         Me.LabelMod2 = New System.Windows.Forms.Label()
         Me.LabelMod1 = New System.Windows.Forms.Label()
         Me.LabelMod0 = New System.Windows.Forms.Label()
+        Me.GroupBoxEasyMode = New System.Windows.Forms.GroupBox()
+        Me.LabelSelectedSettingsDescription = New System.Windows.Forms.Label()
+        Me.LabelSelectedSettingsName = New System.Windows.Forms.Label()
+        Me.LabelClickNextSettings = New System.Windows.Forms.Label()
+        Me.LabelClickPreviousSettings = New System.Windows.Forms.Label()
         Me.PanelMoveForm.SuspendLayout()
         Me.GroupBoxAdvancedMode.SuspendLayout()
         Me.GroupBoxCheckBoxModList.SuspendLayout()
         Me.GroupBoxModList.SuspendLayout()
+        Me.GroupBoxEasyMode.SuspendLayout()
         Me.SuspendLayout()
         '
         'PanelMoveForm
@@ -92,7 +97,6 @@ Partial Class FormMain
         '
         'GroupBoxAdvancedMode
         '
-        Me.GroupBoxAdvancedMode.Controls.Add(Me.GroupBoxEasyMode)
         Me.GroupBoxAdvancedMode.Controls.Add(Me.GroupBoxCheckBoxModList)
         Me.GroupBoxAdvancedMode.Controls.Add(Me.VScrollBarModList)
         Me.GroupBoxAdvancedMode.Controls.Add(Me.LabelClickCurseForge)
@@ -108,15 +112,7 @@ Partial Class FormMain
         Me.GroupBoxAdvancedMode.Size = New System.Drawing.Size(698, 401)
         Me.GroupBoxAdvancedMode.TabIndex = 55
         Me.GroupBoxAdvancedMode.TabStop = False
-        '
-        'GroupBoxEasyMode
-        '
-        Me.GroupBoxEasyMode.Location = New System.Drawing.Point(647, 100)
-        Me.GroupBoxEasyMode.Name = "GroupBoxEasyMode"
-        Me.GroupBoxEasyMode.Size = New System.Drawing.Size(698, 401)
-        Me.GroupBoxEasyMode.TabIndex = 81
-        Me.GroupBoxEasyMode.TabStop = False
-        Me.GroupBoxEasyMode.Visible = False
+        Me.GroupBoxAdvancedMode.Visible = False
         '
         'GroupBoxCheckBoxModList
         '
@@ -472,6 +468,59 @@ Partial Class FormMain
         Me.LabelMod0.TabIndex = 41
         Me.LabelMod0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'GroupBoxEasyMode
+        '
+        Me.GroupBoxEasyMode.Controls.Add(Me.LabelClickPreviousSettings)
+        Me.GroupBoxEasyMode.Controls.Add(Me.LabelClickNextSettings)
+        Me.GroupBoxEasyMode.Controls.Add(Me.LabelSelectedSettingsName)
+        Me.GroupBoxEasyMode.Controls.Add(Me.LabelSelectedSettingsDescription)
+        Me.GroupBoxEasyMode.Location = New System.Drawing.Point(-2, 36)
+        Me.GroupBoxEasyMode.Name = "GroupBoxEasyMode"
+        Me.GroupBoxEasyMode.Size = New System.Drawing.Size(698, 401)
+        Me.GroupBoxEasyMode.TabIndex = 81
+        Me.GroupBoxEasyMode.TabStop = False
+        '
+        'LabelSelectedSettingsDescription
+        '
+        Me.LabelSelectedSettingsDescription.Font = New System.Drawing.Font("宋体", 10.0!)
+        Me.LabelSelectedSettingsDescription.Location = New System.Drawing.Point(163, 176)
+        Me.LabelSelectedSettingsDescription.Name = "LabelSelectedSettingsDescription"
+        Me.LabelSelectedSettingsDescription.Size = New System.Drawing.Size(378, 149)
+        Me.LabelSelectedSettingsDescription.TabIndex = 0
+        Me.LabelSelectedSettingsDescription.Text = "适合新手玩家使用，包含小地图、游戏优化、皮肤补丁等"
+        Me.LabelSelectedSettingsDescription.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'LabelSelectedSettingsName
+        '
+        Me.LabelSelectedSettingsName.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.LabelSelectedSettingsName.Font = New System.Drawing.Font("宋体", 40.0!)
+        Me.LabelSelectedSettingsName.Location = New System.Drawing.Point(156, 45)
+        Me.LabelSelectedSettingsName.Name = "LabelSelectedSettingsName"
+        Me.LabelSelectedSettingsName.Size = New System.Drawing.Size(385, 113)
+        Me.LabelSelectedSettingsName.TabIndex = 1
+        Me.LabelSelectedSettingsName.Text = "新手推荐"
+        Me.LabelSelectedSettingsName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'LabelClickNextSettings
+        '
+        Me.LabelClickNextSettings.Font = New System.Drawing.Font("宋体", 150.0!)
+        Me.LabelClickNextSettings.Location = New System.Drawing.Point(547, 36)
+        Me.LabelClickNextSettings.Name = "LabelClickNextSettings"
+        Me.LabelClickNextSettings.Size = New System.Drawing.Size(144, 339)
+        Me.LabelClickNextSettings.TabIndex = 2
+        Me.LabelClickNextSettings.Text = ">"
+        Me.LabelClickNextSettings.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'LabelClickPreviousSettings
+        '
+        Me.LabelClickPreviousSettings.Font = New System.Drawing.Font("宋体", 150.0!)
+        Me.LabelClickPreviousSettings.Location = New System.Drawing.Point(6, 36)
+        Me.LabelClickPreviousSettings.Name = "LabelClickPreviousSettings"
+        Me.LabelClickPreviousSettings.Size = New System.Drawing.Size(144, 339)
+        Me.LabelClickPreviousSettings.TabIndex = 3
+        Me.LabelClickPreviousSettings.Text = "<"
+        Me.LabelClickPreviousSettings.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'FormMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -479,6 +528,7 @@ Partial Class FormMain
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.ClientSize = New System.Drawing.Size(694, 437)
         Me.Controls.Add(Me.PanelMoveForm)
+        Me.Controls.Add(Me.GroupBoxEasyMode)
         Me.Controls.Add(Me.GroupBoxAdvancedMode)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
@@ -489,6 +539,7 @@ Partial Class FormMain
         Me.GroupBoxAdvancedMode.ResumeLayout(False)
         Me.GroupBoxCheckBoxModList.ResumeLayout(False)
         Me.GroupBoxModList.ResumeLayout(False)
+        Me.GroupBoxEasyMode.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -534,4 +585,8 @@ Partial Class FormMain
     Friend WithEvents LabelMod0 As Label
     Friend WithEvents GroupBoxEasyMode As GroupBox
     Friend WithEvents GroupBoxCheckBoxModList As GroupBox
+    Friend WithEvents LabelSelectedSettingsName As Label
+    Friend WithEvents LabelSelectedSettingsDescription As Label
+    Friend WithEvents LabelClickPreviousSettings As Label
+    Friend WithEvents LabelClickNextSettings As Label
 End Class
