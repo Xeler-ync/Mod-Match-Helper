@@ -94,7 +94,7 @@ Public Class FormMain
             ShowText = Path.GetFileName(ModListWithFullInfo.moddisplayinfo(ModListWithFullInfo.modid(WorkingRank)).ModPath)
             GroupBoxModList.Controls(GroupBoxModList.Controls.Count - 1 - i).Text = ShowText '天知道为什么这玩意是反的，非得这么搞
             WorkingRank += 1
-            If WorkingRank > ModListWithFullInfo.modid.Count - 1 Then Exit Sub
+            If WorkingRank > ModListWithFullInfo.modid.Count - 1 Then Exit For
         Next
         CheckBoxMod0.Text = LabelMod0.Text
         CheckBoxMod1.Text = LabelMod1.Text
@@ -107,11 +107,11 @@ Public Class FormMain
         CheckBoxMod8.Text = LabelMod8.Text
         CheckBoxMod9.Text = LabelMod9.Text
         CheckBoxMod10.Text = LabelMod10.Text
-        CheckBoxMod11.Text = LabelMod1.Text
+        CheckBoxMod11.Text = LabelMod11.Text
         CheckBoxMod12.Text = LabelMod12.Text
         CheckBoxMod13.Text = LabelMod13.Text
         For Each i In GroupBoxCheckBoxModList.Controls
-            i.checked = ModListWithFullInfo.moddisplayinfo(FromModFileNameFineModIDInModListWithFullInfo(i.Text)).Choosed
+            i.Checked = ModListWithFullInfo.moddisplayinfo(FromModFileNameFineModIDInModListWithFullInfo(i.Text)).Choosed
         Next
     End Sub
 
@@ -186,12 +186,30 @@ Public Class FormMain
         End If
     End Sub
 
+    Private Sub ReflashLabelModInfo(Text As String)
+        If Text = "" Then Exit Sub
+        Dim modid As String
+        modid = FromModFileNameFineModIDInModListWithFullInfo(Text)
+        LabelModInfo.Text = ""
+        LabelModInfo.Text += "名字 : " & ModListWithFullInfo.moddisplayinfo(modid).displayname & vbCrLf
+        LabelModInfo.Text += "介绍 : " & ModListWithFullInfo.moddisplayinfo(modid).displaydescription & vbCrLf
+        LabelModInfo.Text += "依赖 : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).dependsArray) & vbCrLf & vbCrLf
+        LabelModInfo.Text += "id : " & ModListWithFullInfo.moddisplayinfo(modid).id & vbCrLf
+        LabelModInfo.Text += "version : " & ModListWithFullInfo.moddisplayinfo(modid).version & vbCrLf
+        LabelModInfo.Text += "name : " & ModListWithFullInfo.moddisplayinfo(modid).name & vbCrLf
+        LabelModInfo.Text += "author(s) : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).authersArray) & vbCrLf
+        LabelModInfo.Text += "description : " & ModListWithFullInfo.moddisplayinfo(modid).description
+        LastSelectModID = modid
+    End Sub
+
     Private Sub CheckBoxModCheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxMod0.CheckedChanged, CheckBoxMod1.CheckedChanged, CheckBoxMod2.CheckedChanged, CheckBoxMod3.CheckedChanged, CheckBoxMod4.CheckedChanged, CheckBoxMod5.CheckedChanged, CheckBoxMod6.CheckedChanged, CheckBoxMod7.CheckedChanged, CheckBoxMod8.CheckedChanged, CheckBoxMod9.CheckedChanged, CheckBoxMod10.CheckedChanged, CheckBoxMod11.CheckedChanged, CheckBoxMod12.CheckedChanged, CheckBoxMod13.CheckedChanged
-        ModifyModChoose(FromModFileNameFineModIDInModListWithFullInfo(sender.Text), sender.checked)
+        ModifyModChoose(FromModFileNameFineModIDInModListWithFullInfo(sender.Text), sender.Checked)
+        ReflashLabelModInfo(sender.Text)
     End Sub
 
     Private Sub LabelModDoubleClick(sender As Object, e As EventArgs) Handles LabelMod0.DoubleClick, LabelMod1.DoubleClick, LabelMod2.DoubleClick, LabelMod3.DoubleClick, LabelMod4.DoubleClick, LabelMod5.DoubleClick, LabelMod6.DoubleClick, LabelMod7.DoubleClick, LabelMod8.DoubleClick, LabelMod9.DoubleClick, LabelMod10.DoubleClick, LabelMod11.DoubleClick, LabelMod12.DoubleClick, LabelMod13.DoubleClick
         ModifyModChoose(FromModFileNameFineModIDInModListWithFullInfo(sender.Text), Not ModListWithFullInfo.moddisplayinfo(FromModFileNameFineModIDInModListWithFullInfo(sender.Text)).Choosed)
+        ReflashLabelModInfo(sender.Text)
     End Sub
 
     Private Sub ModifyModChoose(modid As String, Choose As Boolean)
@@ -210,19 +228,7 @@ Public Class FormMain
     End Sub
 
     Private Sub LabelModClick(sender As Object, e As EventArgs) Handles LabelMod0.Click, LabelMod1.Click, LabelMod2.Click, LabelMod3.Click, LabelMod4.Click, LabelMod5.Click, LabelMod6.Click, LabelMod7.Click, LabelMod8.Click, LabelMod9.Click, LabelMod10.Click, LabelMod11.Click, LabelMod12.Click, LabelMod13.Click
-        If sender.text = "" Then Exit Sub
-        Dim modid As String
-        modid = FromModFileNameFineModIDInModListWithFullInfo(sender.Text)
-        LabelModInfo.Text = ""
-        LabelModInfo.Text += "名字 : " & ModListWithFullInfo.moddisplayinfo(modid).displayname & vbCrLf
-        LabelModInfo.Text += "介绍 : " & ModListWithFullInfo.moddisplayinfo(modid).displaydescription & vbCrLf
-        LabelModInfo.Text += "依赖 : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).dependsArray) & vbCrLf & vbCrLf
-        LabelModInfo.Text += "id : " & ModListWithFullInfo.moddisplayinfo(modid).id & vbCrLf
-        LabelModInfo.Text += "version : " & ModListWithFullInfo.moddisplayinfo(modid).version & vbCrLf
-        LabelModInfo.Text += "name : " & ModListWithFullInfo.moddisplayinfo(modid).name & vbCrLf
-        LabelModInfo.Text += "author(s) : " & ConnectStrArrayToString(ModListWithFullInfo.moddisplayinfo(modid).authersArray) & vbCrLf
-        LabelModInfo.Text += "description : " & ModListWithFullInfo.moddisplayinfo(modid).description
-        LastSelectModID = modid
+        ReflashLabelModInfo(sender.Text)
     End Sub
 
     Private Sub ButtonApplyAll_Click(sender As Object, e As EventArgs) Handles ButtonApplyAll.Click

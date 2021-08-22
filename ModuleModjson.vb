@@ -94,16 +94,23 @@ Module ModuleModjson
             Next
             Dim NewInfo As String
             NewInfo = Mid(jsonContent.Split(WrapType)(CheckLineNum), FirstQuotationMarks + 1, SecondQuotationMarks - FirstQuotationMarks - 1)
-            If (Not NewInfo.Contains("fabric")) And (Not NewInfo.Contains("minecraft") And (Not NewInfo.Contains("java"))) Then 'do not add fabricload fabric minrcraft
-                For Each i In depends
-                    If i = NewInfo Then
-                        NewInfo = ""
-                    End If
-                Next
-                If NewInfo <> "" Then
-                    ReDim Preserve depends(0 To UBound(depends) + 1)
-                    depends(UBound(depends)) = NewInfo
+            Dim IgnoreString() As String = {"fabric", "minecraft", "java", "1.17", "1.16", "1.15", "1.14", "1.13", "1.12", "1.11", "1.10", "1.9", "1.8", "1.7", "1.6", "1.5", "1.4", "1.3", "1.2", "1.1", "1.0"}
+            Dim IgnoreIt As Boolean = False
+            For Each SingleIgnoreString In IgnoreString
+                If NewInfo.Contains(SingleIgnoreString) Then 'do not add fabricload fabric minrcraft
+                    IgnoreIt = True
+                    Exit For
                 End If
+            Next
+            If IgnoreIt = True Then Continue For
+            For Each i In depends
+                If i = NewInfo Then
+                    NewInfo = ""
+                End If
+            Next
+            If NewInfo <> "" Then
+                ReDim Preserve depends(0 To UBound(depends) + 1)
+                depends(UBound(depends)) = NewInfo
             End If
         Next
         Return depends

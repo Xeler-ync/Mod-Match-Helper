@@ -25,7 +25,10 @@ Partial Class FormMain
         Me.PanelMoveForm = New System.Windows.Forms.Panel()
         Me.LabelMMH = New System.Windows.Forms.Label()
         Me.GroupBoxAdvancedMode = New System.Windows.Forms.GroupBox()
+        Me.GroupBoxEasyMode = New System.Windows.Forms.GroupBox()
+        Me.GroupBoxCheckBoxModList = New System.Windows.Forms.GroupBox()
         Me.CheckBoxMod13 = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxMod0 = New System.Windows.Forms.CheckBox()
         Me.CheckBoxMod12 = New System.Windows.Forms.CheckBox()
         Me.CheckBoxMod11 = New System.Windows.Forms.CheckBox()
         Me.CheckBoxMod10 = New System.Windows.Forms.CheckBox()
@@ -38,7 +41,6 @@ Partial Class FormMain
         Me.CheckBoxMod3 = New System.Windows.Forms.CheckBox()
         Me.CheckBoxMod2 = New System.Windows.Forms.CheckBox()
         Me.CheckBoxMod1 = New System.Windows.Forms.CheckBox()
-        Me.CheckBoxMod0 = New System.Windows.Forms.CheckBox()
         Me.VScrollBarModList = New System.Windows.Forms.VScrollBar()
         Me.LabelClickCurseForge = New System.Windows.Forms.Label()
         Me.LabelClickMCbaike = New System.Windows.Forms.Label()
@@ -48,7 +50,6 @@ Partial Class FormMain
         Me.ButtonTest1 = New System.Windows.Forms.Button()
         Me.LabelModInfo = New System.Windows.Forms.Label()
         Me.GroupBoxModList = New System.Windows.Forms.GroupBox()
-        Me.GroupBoxEasyMode = New System.Windows.Forms.GroupBox()
         Me.LabelMod13 = New System.Windows.Forms.Label()
         Me.LabelMod12 = New System.Windows.Forms.Label()
         Me.LabelMod11 = New System.Windows.Forms.Label()
@@ -63,11 +64,10 @@ Partial Class FormMain
         Me.LabelMod2 = New System.Windows.Forms.Label()
         Me.LabelMod1 = New System.Windows.Forms.Label()
         Me.LabelMod0 = New System.Windows.Forms.Label()
-        Me.GroupBoxCheckBoxModList = New System.Windows.Forms.GroupBox()
         Me.PanelMoveForm.SuspendLayout()
         Me.GroupBoxAdvancedMode.SuspendLayout()
-        Me.GroupBoxModList.SuspendLayout()
         Me.GroupBoxCheckBoxModList.SuspendLayout()
+        Me.GroupBoxModList.SuspendLayout()
         Me.SuspendLayout()
         '
         'PanelMoveForm
@@ -109,6 +109,37 @@ Partial Class FormMain
         Me.GroupBoxAdvancedMode.TabIndex = 55
         Me.GroupBoxAdvancedMode.TabStop = False
         '
+        'GroupBoxEasyMode
+        '
+        Me.GroupBoxEasyMode.Location = New System.Drawing.Point(647, 100)
+        Me.GroupBoxEasyMode.Name = "GroupBoxEasyMode"
+        Me.GroupBoxEasyMode.Size = New System.Drawing.Size(698, 401)
+        Me.GroupBoxEasyMode.TabIndex = 81
+        Me.GroupBoxEasyMode.TabStop = False
+        Me.GroupBoxEasyMode.Visible = False
+        '
+        'GroupBoxCheckBoxModList
+        '
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod13)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod0)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod12)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod11)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod10)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod9)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod8)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod7)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod6)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod5)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod4)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod3)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod2)
+        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod1)
+        Me.GroupBoxCheckBoxModList.Location = New System.Drawing.Point(22, 18)
+        Me.GroupBoxCheckBoxModList.Name = "GroupBoxCheckBoxModList"
+        Me.GroupBoxCheckBoxModList.Size = New System.Drawing.Size(17, 316)
+        Me.GroupBoxCheckBoxModList.TabIndex = 78
+        Me.GroupBoxCheckBoxModList.TabStop = False
+        '
         'CheckBoxMod13
         '
         Me.CheckBoxMod13.Location = New System.Drawing.Point(2, 290)
@@ -116,6 +147,14 @@ Partial Class FormMain
         Me.CheckBoxMod13.Size = New System.Drawing.Size(15, 24)
         Me.CheckBoxMod13.TabIndex = 77
         Me.CheckBoxMod13.UseVisualStyleBackColor = True
+        '
+        'CheckBoxMod0
+        '
+        Me.CheckBoxMod0.Location = New System.Drawing.Point(2, 4)
+        Me.CheckBoxMod0.Name = "CheckBoxMod0"
+        Me.CheckBoxMod0.Size = New System.Drawing.Size(15, 24)
+        Me.CheckBoxMod0.TabIndex = 64
+        Me.CheckBoxMod0.UseVisualStyleBackColor = True
         '
         'CheckBoxMod12
         '
@@ -212,14 +251,6 @@ Partial Class FormMain
         Me.CheckBoxMod1.Size = New System.Drawing.Size(15, 24)
         Me.CheckBoxMod1.TabIndex = 65
         Me.CheckBoxMod1.UseVisualStyleBackColor = True
-        '
-        'CheckBoxMod0
-        '
-        Me.CheckBoxMod0.Location = New System.Drawing.Point(2, 4)
-        Me.CheckBoxMod0.Name = "CheckBoxMod0"
-        Me.CheckBoxMod0.Size = New System.Drawing.Size(15, 24)
-        Me.CheckBoxMod0.TabIndex = 64
-        Me.CheckBoxMod0.UseVisualStyleBackColor = True
         '
         'VScrollBarModList
         '
@@ -329,162 +360,117 @@ Partial Class FormMain
         Me.GroupBoxModList.TabIndex = 63
         Me.GroupBoxModList.TabStop = False
         '
-        'GroupBoxEasyMode
-        '
-        Me.GroupBoxEasyMode.Location = New System.Drawing.Point(375, 154)
-        Me.GroupBoxEasyMode.Name = "GroupBoxEasyMode"
-        Me.GroupBoxEasyMode.Size = New System.Drawing.Size(698, 401)
-        Me.GroupBoxEasyMode.TabIndex = 81
-        Me.GroupBoxEasyMode.TabStop = False
-        Me.GroupBoxEasyMode.Visible = False
-        '
         'LabelMod13
         '
-        Me.LabelMod13.AutoSize = True
         Me.LabelMod13.Location = New System.Drawing.Point(0, 294)
         Me.LabelMod13.Name = "LabelMod13"
-        Me.LabelMod13.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod13.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod13.TabIndex = 54
         Me.LabelMod13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod12
         '
-        Me.LabelMod12.AutoSize = True
         Me.LabelMod12.Location = New System.Drawing.Point(0, 272)
         Me.LabelMod12.Name = "LabelMod12"
-        Me.LabelMod12.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod12.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod12.TabIndex = 53
         Me.LabelMod12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod11
         '
-        Me.LabelMod11.AutoSize = True
         Me.LabelMod11.Location = New System.Drawing.Point(0, 250)
         Me.LabelMod11.Name = "LabelMod11"
-        Me.LabelMod11.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod11.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod11.TabIndex = 52
         Me.LabelMod11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod10
         '
-        Me.LabelMod10.AutoSize = True
         Me.LabelMod10.Location = New System.Drawing.Point(0, 228)
         Me.LabelMod10.Name = "LabelMod10"
-        Me.LabelMod10.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod10.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod10.TabIndex = 51
         Me.LabelMod10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod9
         '
-        Me.LabelMod9.AutoSize = True
         Me.LabelMod9.Location = New System.Drawing.Point(0, 206)
         Me.LabelMod9.Name = "LabelMod9"
-        Me.LabelMod9.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod9.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod9.TabIndex = 50
         Me.LabelMod9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod8
         '
-        Me.LabelMod8.AutoSize = True
         Me.LabelMod8.Location = New System.Drawing.Point(0, 184)
         Me.LabelMod8.Name = "LabelMod8"
-        Me.LabelMod8.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod8.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod8.TabIndex = 49
         Me.LabelMod8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod7
         '
-        Me.LabelMod7.AutoSize = True
         Me.LabelMod7.Location = New System.Drawing.Point(0, 162)
         Me.LabelMod7.Name = "LabelMod7"
-        Me.LabelMod7.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod7.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod7.TabIndex = 48
         Me.LabelMod7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod6
         '
-        Me.LabelMod6.AutoSize = True
         Me.LabelMod6.Location = New System.Drawing.Point(0, 140)
         Me.LabelMod6.Name = "LabelMod6"
-        Me.LabelMod6.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod6.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod6.TabIndex = 47
         Me.LabelMod6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod5
         '
-        Me.LabelMod5.AutoSize = True
         Me.LabelMod5.Location = New System.Drawing.Point(0, 118)
         Me.LabelMod5.Name = "LabelMod5"
-        Me.LabelMod5.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod5.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod5.TabIndex = 46
         Me.LabelMod5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod4
         '
-        Me.LabelMod4.AutoSize = True
         Me.LabelMod4.Location = New System.Drawing.Point(0, 97)
         Me.LabelMod4.Name = "LabelMod4"
-        Me.LabelMod4.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod4.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod4.TabIndex = 45
         Me.LabelMod4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod3
         '
-        Me.LabelMod3.AutoSize = True
         Me.LabelMod3.Location = New System.Drawing.Point(0, 75)
         Me.LabelMod3.Name = "LabelMod3"
-        Me.LabelMod3.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod3.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod3.TabIndex = 44
         Me.LabelMod3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod2
         '
-        Me.LabelMod2.AutoSize = True
         Me.LabelMod2.Location = New System.Drawing.Point(0, 53)
         Me.LabelMod2.Name = "LabelMod2"
-        Me.LabelMod2.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod2.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod2.TabIndex = 43
         Me.LabelMod2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod1
         '
-        Me.LabelMod1.AutoSize = True
         Me.LabelMod1.Location = New System.Drawing.Point(0, 31)
         Me.LabelMod1.Name = "LabelMod1"
-        Me.LabelMod1.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod1.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod1.TabIndex = 42
         Me.LabelMod1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'LabelMod0
         '
-        Me.LabelMod0.AutoSize = True
         Me.LabelMod0.Location = New System.Drawing.Point(0, 9)
         Me.LabelMod0.Name = "LabelMod0"
-        Me.LabelMod0.Size = New System.Drawing.Size(0, 12)
+        Me.LabelMod0.Size = New System.Drawing.Size(653, 18)
         Me.LabelMod0.TabIndex = 41
         Me.LabelMod0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'GroupBoxCheckBoxModList
-        '
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod13)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod0)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod12)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod11)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod10)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod9)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod8)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod7)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod6)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod5)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod4)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod3)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod2)
-        Me.GroupBoxCheckBoxModList.Controls.Add(Me.CheckBoxMod1)
-        Me.GroupBoxCheckBoxModList.Location = New System.Drawing.Point(22, 18)
-        Me.GroupBoxCheckBoxModList.Name = "GroupBoxCheckBoxModList"
-        Me.GroupBoxCheckBoxModList.Size = New System.Drawing.Size(17, 316)
-        Me.GroupBoxCheckBoxModList.TabIndex = 78
-        Me.GroupBoxCheckBoxModList.TabStop = False
         '
         'FormMain
         '
@@ -501,9 +487,8 @@ Partial Class FormMain
         Me.Text = "MMH"
         Me.PanelMoveForm.ResumeLayout(False)
         Me.GroupBoxAdvancedMode.ResumeLayout(False)
-        Me.GroupBoxModList.ResumeLayout(False)
-        Me.GroupBoxModList.PerformLayout()
         Me.GroupBoxCheckBoxModList.ResumeLayout(False)
+        Me.GroupBoxModList.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
